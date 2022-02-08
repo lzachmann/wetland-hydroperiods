@@ -3,7 +3,7 @@
 
 var viz = {};
 
-viz.L8_vizParams = {
+viz.params.L8 = {
   bands: ["SR_B4", "SR_B3", "SR_B2"],
   gamma: 1,
   min: 1000,
@@ -11,6 +11,6 @@ viz.L8_vizParams = {
   opacity: 1,
 }; // Define L8 visualization parameters
 
-viz.vizParams = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
+viz.params.sma = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
 
 exports = viz;
