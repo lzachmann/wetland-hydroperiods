@@ -67,8 +67,24 @@ var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat
 // -----------------------------------------------------------------
 
 // Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-var imageL5 = utils.load_and_filter("LANDSAT/LT05/C02/T1_L2", startDate, endDate, cloudCover, geometry, startDOY, endDOY);
-var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2", startDate, endDate, cloudCover, geometry, startDOY, endDOY);
+var imageL5 = utils.load_and_filter(
+  "LANDSAT/LT05/C02/T1_L2",
+  startDate,
+  endDate,
+  cloudCover,
+  geometry,
+  startDOY,
+  endDOY
+);
+var imageL8 = utils.load_and_filter(
+  "LANDSAT/LC08/C02/T1_L2",
+  startDate,
+  endDate,
+  cloudCover,
+  geometry,
+  startDOY,
+  endDOY
+);
 
 // // print (imageL5, 'L5 image collection'); // Useful for looking up individual dates or wonky values (often caused by cloud/cloud shadow not masked out)
 // print(imageL8, "L8 image collection");
@@ -167,7 +183,7 @@ var timeSeries_index2 = ui.Chart.image
   )
   .setChartType("ScatterChart")
   .setOptions({
-    title: "NDWI",
+    title: index2,
     vAxis: { title: index2 },
     lineWidth: 1,
     pointSize: 4,
