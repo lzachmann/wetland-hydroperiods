@@ -177,24 +177,8 @@ print(pdsiSeries, climVar1);
 var eddiSeries = viz.chart.clim(gridmet, AOI, climVar2);
 print(eddiSeries, climVar2);
 
-// var eddiSeries = ui.Chart.image
-//   .series({
-//     imageCollection: gridmet.select(climVar2), // eddi1y - aggregated over last year
-//     region: AOI, // Select focal area or wetland
-//   })
-//   .setOptions({
-//     interpolateNulls: false,
-//     lineWidth: 1,
-//     pointSize: 3,
-//     title: "EDDI (1-yr) over Time at a Single Polygon",
-//     vAxis: { title: "EDDI" },
-//     hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },
-//   });
-// print(eddiSeries, "eddi");
-
 // Load and filter monthly TerraClimate data
-var monthlyClim = ee
-  .ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
+var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
 var monthlyClim1 = monthlyClim.select(climVar3); // SWE - Snow Water Equivlent
 var monthlyClim2 = monthlyClim.select(climVar4); // PR - Precipitation accumulation
