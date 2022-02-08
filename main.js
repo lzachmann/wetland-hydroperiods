@@ -20,11 +20,9 @@ var utils = require('users/laura_csp/wetland_hydroperiods:utils.js');
 // National Park Service & Conservation Science Partners
 // Northern Colorado Plateau Network (NCPN) Wetland Hydroperiods Project
 
-// Author: Meghan Halabisky (mhalabisky@gmail.com)
-// Countributors: Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
-
-// Adapted for NCPN by Laura Farwell
-// Last updated: Feb 7, 2022
+// Author(s): Meghan Halabisky (mhalabisky@gmail.com)
+// Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
+// Maintainer(s): Luke Zachmann
 
 // Purpose: Wetland hydrograph reconstruction using spectral mixture analysis (SMA);
     // + calculates Normalized Difference Indices (for vegetation, wetness);
