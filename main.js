@@ -150,11 +150,11 @@ var smaWater = ui.Chart.image
 print(smaWater, "Hydrograph");
 
 // NDVI time series
-var timeSeries_index1 = viz.chart.vi(indicesAll, AOI, index1, "#0f8755");
+var timeSeries_index1 = viz.chart.nd(indicesAll, AOI, index1, "#0f8755");
 print(timeSeries_index1, index1);
 
 // NDWI time series
-var timeSeries_index2 = viz.chart.vi(indicesAll, AOI, index2, "#0000FF");
+var timeSeries_index2 = viz.chart.nd(indicesAll, AOI, index2, "#0000FF");
 print(timeSeries_index2, index2);
 
 // -----------------------------------------------------------------
