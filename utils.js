@@ -52,8 +52,9 @@ var cirrus = function(image) {
   // Return an image masking med-high cirrus pixels
   return getQAbits(QA, 14, 15, 'cirrus').lte(1);
 };
+
 // Combined cloud, cloud shadow, snow/ice, cirrus mask
-var cloudMask = function(image) {
+utils.cloudMask = function(image) {
   image = image.updateMask(cloud(image));
   image = image.updateMask(cloudShadow(image));
   image = image.updateMask(snowIce(image));
@@ -61,13 +62,13 @@ var cloudMask = function(image) {
 };
 
 // Function to unmask an image and replace masked NA values of (0) with (-9999) for export
-var cloudUnmask = function(image) {
+utils.cloudUnmask = function(image) {
   return image.unmask(-9999);
 };
 
 
 // Function to add a time band to the image (for mapping time series)
-var createTimeBand_indices = function(image) {
+utils.createTimeBand_indices = function(image) {
   // Scale milliseconds by a large constant to avoid very small slopes
   // in the linear regression output.
   return image.addBands(image.metadata('system:time_start').divide(1e18));
@@ -75,7 +76,7 @@ var createTimeBand_indices = function(image) {
 
 
 // Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
-var smaUnmixL5 = function(image) {
+utils.smaUnmixL5 = function(image) {
   // Select 6 spectral bands
   var s_image = image.select('SR_B1','SR_B2','SR_B3','SR_B4','SR_B5','SR_B7');
   // Add time band
@@ -117,7 +118,7 @@ var smaUnmixL5 = function(image) {
 
 
 // Function to run full SMA for Landsat 8
-var smaUnmixL8 = function(image) {
+utils.smaUnmixL8 = function(image) {
   // Select 6 spectral bands
   var s_image = image.select('SR_B2','SR_B3','SR_B4','SR_B5','SR_B6','SR_B7');
   // Add time band
@@ -156,7 +157,7 @@ var smaUnmixL8 = function(image) {
     // MNDWI = Modified NDWI (green, SWIR) - distinguishes built areas from water (Xu 2006, modified from McFeeters 1996)
 
 // for Landsat 5
-var addIndexL5 = function(image) {
+utils.addIndexL5 = function(image) {
   return image
   // NDVI  near infrared and red
   .addBands(image.normalizedDifference(['SR_B4','SR_B3']).rename('NDVI')) // L5: SR_B4=NIR, SR_B3=red
@@ -168,7 +169,7 @@ var addIndexL5 = function(image) {
   .addBands(image.normalizedDifference(['SR_B2','SR_B5']).rename('MNDWI')); // L5: SR_B2=green, SR_B5=SWIR (Xu 2006)
 };
 // for Landsat 8
-var addIndexL8 = function(image) {
+utils.addIndexL8 = function(image) {
   return image
   // NDVI  near infrared and red
   .addBands(image.normalizedDifference(['SR_B5','SR_B4']).rename('NDVI')) // L8: SR_B5=NIR, SR_B4=red
