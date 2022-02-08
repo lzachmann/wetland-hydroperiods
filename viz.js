@@ -56,5 +56,46 @@ viz.chart.clim = function(imageCollection, region, band) {
     );
 };
 
+viz.chart.tclim = function(imageCollection, region, band, startDate, endDate, scale = 100) {
+//   var monthlyClim1 = monthlyClim.select(climVar3); // SWE - Snow Water Equivlent
+// var monthlyClim2 = monthlyClim.select(climVar4); // PR - Precipitation accumulation
+
+// Create list of dates for time series
+var dateListYearly = ee.List.sequence(
+  0,
+  endDate.difference(startDate, "year").round(),
+  1
+);
+var makeDateListYearly = function (n) {
+  return startDate.advance(n, "year");
+};
+dateListYearly = dateListYearly.map(makeDateListYearly);
+
+// Plot TerraClimate monthly climate date
+var options1 = {
+  title: band.toUpperCase() + " Monthly",
+  fontSize: 12,
+  hAxis: { title: "Date" },
+  vAxis: { title: band.toUpperCase() + " (mm)" },
+  series: { 0: { color: "red" } },
+};
+
+  return (
+    ui.Chart.image.series(imageCollection.select(band), region, ee.Reducer.mean(), scale)
+    .setOptions(options1)
+    );
+};
+
+// print(
+//   ui.Chart.image
+//     .series(monthlyClim1, AOI, ee.Reducer.mean(), scale)
+//     .setOptions(options1)
+// );
+// print(
+//   ui.Chart.image
+//     .series(monthlyClim2, AOI, ee.Reducer.mean(), scale)
+//     .setOptions(options1)
+// )
+
 
 exports = viz;
