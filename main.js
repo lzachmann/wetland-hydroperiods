@@ -15,7 +15,9 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
     maxExtents = ee.FeatureCollection("users/laura_csp/maxExtents_test"),
     ponds = ee.FeatureCollection("users/laura_csp/ponds_test");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
+// Load submodules
 var utils = require("users/laura_csp/wetland_hydroperiods:utils.js");
+var viz = require("users/laura_csp/wetland_hydroperiods:viz.js");
 
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
@@ -71,8 +73,8 @@ var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2", startDate, endDate
 // // print (imageL5, 'L5 image collection'); // Useful for looking up individual dates or wonky values (often caused by cloud/cloud shadow not masked out)
 // print(imageL8, "L8 image collection");
 // // Map Landsat scene of interest
-// var L8_scene = ee.Image(sceneID);
-// Map.addLayer(L8_scene, L8_vizParams, "Selected Landsat 8 scene");
+var L8_scene = ee.Image(sceneID);
+Map.addLayer(L8_scene, viz.L8_vizParams, "Selected Landsat 8 scene");
 
 // ----------------------------------------------
 // Run SMA over image collection - time series
