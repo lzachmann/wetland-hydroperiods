@@ -2,7 +2,14 @@
 A fork of a Google Earth Engine project, accessible by those with read/write permissions [here](
 https://code.earthengine.google.com/?accept_repo=users/laura_csp/wetland_hydroperiods).
 
+## Recommended citation(s)
+Halabisky, M., L. M. Moskal, A. Gillespie, M. Hannam. 2016. Reconstructing semi-arid wetland surface water dynamics through spectral mixture analysis of a time series of Landsat satellite images (1984-2011). _Remote Sensing of Environment_ 177:171-183.
+
 ## Getting started
+Copy the contents of the JavaScript file into your Google Earth Engine (GEE) code editor. This file creates exports tasks that will go to your Google Drive. The R scripts included are used to post-process data exported from GEE.
+
+## Docs
+For the report, please see this [Google Doc](https://docs.google.com/document/d/1l8DwajDEt5ObPUpLkjE6UOuMHjyfPPb8lxl0-Zz69p8/edit?usp=sharing).
 
 ## Developer notes
 To sync the fork with the upstream repo, follow these steps:
