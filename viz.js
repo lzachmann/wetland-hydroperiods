@@ -42,7 +42,7 @@ viz.chart.nd = function(imageCollection, regions, band, color) {
     );
 };
 
-viz.chart.clim = function(imageCollection, region, band) {
+viz.chart.gmet = function(imageCollection, region, band) {
   return (
     ui.Chart.image.series(imageCollection.select(band), region)
   .setOptions({	
@@ -56,7 +56,8 @@ viz.chart.clim = function(imageCollection, region, band) {
     );
 };
 
-viz.chart.tclim = function(imageCollection, region, band, startDate, endDate, scale = 100) {
+viz.chart.tclim = function(imageCollection, region, band, startDate, endDate) {
+  var scale = 100
 //   var monthlyClim1 = monthlyClim.select(climVar3); // SWE - Snow Water Equivlent
 // var monthlyClim2 = monthlyClim.select(climVar4); // PR - Precipitation accumulation
 
@@ -85,17 +86,6 @@ var options1 = {
     .setOptions(options1)
     );
 };
-
-// print(
-//   ui.Chart.image
-//     .series(monthlyClim1, AOI, ee.Reducer.mean(), scale)
-//     .setOptions(options1)
-// );
-// print(
-//   ui.Chart.image
-//     .series(monthlyClim2, AOI, ee.Reducer.mean(), scale)
-//     .setOptions(options1)
-// )
 
 
 exports = viz;
