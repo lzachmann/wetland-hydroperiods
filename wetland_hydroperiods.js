@@ -356,8 +356,8 @@ print(smaWater, 'Hydrograph');
 var timeSeries_index1 = ui.Chart.image.seriesByRegion(indicesAll, AOI,
     ee.Reducer.mean(), index1, 30, 'system:time_start', 'system:index')
       .setChartType('ScatterChart').setOptions({
-        title: 'NDVI',
-        vAxis: {title: 'NDVI'},
+        title: index1,
+        vAxis: {title: index1},
       lineWidth: 1,
       pointSize: 4,
       colors:['0f8755']
