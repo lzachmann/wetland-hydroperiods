@@ -71,13 +71,6 @@ var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2", startDate, endDate
 // // print (imageL5, 'L5 image collection'); // Useful for looking up individual dates or wonky values (often caused by cloud/cloud shadow not masked out)
 // print(imageL8, "L8 image collection");
 // // Map Landsat scene of interest
-// var L8_vizParams = {
-//   bands: ["SR_B4", "SR_B3", "SR_B2"],
-//   gamma: 1,
-//   min: 1000,
-//   max: 65455,
-//   opacity: 1,
-// }; // Define L8 visualization parameters
 // var L8_scene = ee.Image(sceneID);
 // Map.addLayer(L8_scene, L8_vizParams, "Selected Landsat 8 scene");
 
