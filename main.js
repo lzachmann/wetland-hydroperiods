@@ -170,20 +170,22 @@ var gridmet = ee
   .filterBounds(AOI); // filter by polygon
 
 // PDSI time series
-var pdsiSeries = ui.Chart.image
-  .series({
-    imageCollection: gridmet.select(climVar1), // PDSI - Palmer Drought Severity Index
-    region: geometry, // Select focal area or wetland
-  })
-  .setOptions({
-    interpolateNulls: false,
-    lineWidth: 1,
-    pointSize: 3,
-    title: "PDSI over Time at a Single Polygon",
-    vAxis: { title: "PDSI" },
-    hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },
-  });
-print(pdsiSeries, "pdsi");
+var pdsiSeries = viz.chart.clim(gridmet, geometry, climVar1);
+print(pdsiSeries, climVar1);
+// var pdsiSeries = ui.Chart.image
+//   .series({
+//     imageCollection: gridmet.select(climVar1), // PDSI - Palmer Drought Severity Index
+//     region: geometry, // Select focal area or wetland
+//   })
+//   .setOptions({
+//     interpolateNulls: false,
+//     lineWidth: 1,
+//     pointSize: 3,
+//     title: "PDSI over Time at a Single Polygon",
+//     vAxis: { title: "PDSI" },
+//     hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },
+//   });
+// print(pdsiSeries, "pdsi");
 
 // EDDI time series
 var eddiSeries = ui.Chart.image
