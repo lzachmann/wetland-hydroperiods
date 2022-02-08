@@ -90,7 +90,7 @@ var imageL8 = utils.load_and_filter(
 // print(imageL8, "L8 image collection");
 // // Map Landsat scene of interest
 var L8_scene = ee.Image(sceneID);
-Map.addLayer(L8_scene, viz.L8_vizParams, "Selected Landsat 8 scene");
+Map.addLayer(L8_scene, viz.params.L8, "Selected Landsat 8 scene");
 
 // ----------------------------------------------
 // Run SMA over image collection - time series
@@ -106,9 +106,9 @@ var smaAllL8 = imageL8.map(utils.smaUnmixL8).map(utils.cloudMask);
 var smaAll = ee.ImageCollection(smaAllL5.merge(smaAllL8));
 var smaAll = smaAll.sort("date");
 
-//Display SMA image - first date
+// Display SMA image - first date
 print(smaAll, "sma all");
-Map.addLayer(smaAll, viz.vizParams, "water", false);
+Map.addLayer(smaAll, viz.params.sma, "water", false);
 
 // -------------------------------------------------------------------------
 // Run Normalized Difference indices over image collection - time series
