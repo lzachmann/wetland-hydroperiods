@@ -23,8 +23,8 @@ var viz = require("users/laura_csp/wetland_hydroperiods:viz.js");
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
 // Maintainer(s): Luke Zachmann
 
-// Purpose: Wetland hydrograph reconstruction using spectral mixture analysis (SMA);
-// + calculates Normalized Difference Indices (for vegetation, wetness);
+// Purpose: Wetland hydrograph reconstruction using spectral mixture analysis (SMA)
+// + calculates Normalized Difference Indices (for vegetation, wetness)
 // + summarizes Gridmet + TerraClimate drought and climate indices.
 
 // Inputs: L5/L8 Collection 2; Gridmet, TerraClimate
@@ -180,42 +180,9 @@ print(eddiSeries, climVar2);
 // Load and filter monthly TerraClimate data
 var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
-var monthlyClim1 = monthlyClim.select(climVar3); // SWE - Snow Water Equivlent
-var monthlyClim2 = monthlyClim.select(climVar4); // PR - Precipitation accumulation
+  
+  
 
-// Create list of dates for time series
-var dateListYearly = ee.List.sequence(
-  0,
-  endDate.difference(startDate, "year").round(),
-  1
-);
-var makeDateListYearly = function (n) {
-  return startDate.advance(n, "year");
-};
-dateListYearly = dateListYearly.map(makeDateListYearly);
-
-// Set scale for TerraClimate data
-var scale = 100; // what does scale = 100 do here?
-
-// Plot TerraClimate monthly climate date
-var options1 = {
-  // Monthly
-  title: "SM Monthly",
-  fontSize: 12,
-  hAxis: { title: "Date" },
-  vAxis: { title: "SM (mm)" },
-  series: { 0: { color: "red" } },
-};
-print(
-  ui.Chart.image
-    .series(monthlyClim1, AOI, ee.Reducer.mean(), scale)
-    .setOptions(options1)
-);
-print(
-  ui.Chart.image
-    .series(monthlyClim2, AOI, ee.Reducer.mean(), scale)
-    .setOptions(options1)
-);
 
 // -----------------------------------------------------------------
 // Export Data
