@@ -20,7 +20,7 @@ viz.params.sma = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
 
 // ==== plotting ====
 
-viz.chart.vi = function(imageCollection, regions, band) {
+viz.chart.vi = function(imageCollection, regions, band, color) {
   return (
     ui.Chart.image.seriesByRegion(	
     imageCollection,	
