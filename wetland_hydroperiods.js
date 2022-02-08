@@ -19,7 +19,9 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 // Northern Colorado Plateau Network (NCPN) Wetland Hydroperiods Project
 
 // Author: Meghan Halabisky (mhalabisky@gmail.com)
-// Adapted for NCPN by Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
+// Countributors: Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
+
+// Adapted for NCPN by Laura Farwell
 // Last updated: Feb 7, 2022
 
 // Purpose: Wetland hydrograph reconstruction using spectral mixture analysis (SMA);
