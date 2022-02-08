@@ -4,6 +4,10 @@
 var utils = {};
 // utils.dir = 'TBD'; // base path for all assets
 
+// Import submodules
+var viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
+utils.viz = viz;
+
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
 // 1-digit bits: 0 = not a high confidence pixel, 1 = high confidence pixel
