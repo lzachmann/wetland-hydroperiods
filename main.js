@@ -15,7 +15,7 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
     maxExtents = ee.FeatureCollection("users/laura_csp/maxExtents_test"),
     ponds = ee.FeatureCollection("users/laura_csp/ponds_test");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-// Load submodules
+// Imports
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
 var viz = require("users/laura_csp/wetland_hydroperiods:src/viz.js");
 
