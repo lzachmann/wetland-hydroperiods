@@ -4,5 +4,22 @@ https://code.earthengine.google.com/?accept_repo=users/laura_csp/wetland_hydrope
 
 ## Getting started
 
-## Resources
-- [Resolving a "fatal: refusing to merge unrelated histories" Git error](https://www.educative.io/edpresso/the-fatal-refusing-to-merge-unrelated-histories-git-error)
+## Developer notes
+To sync the fork with the upstream repo, follow these steps:
+1. Configure a remote that points to the upstream repo
+```sh
+git remote add upstream https://earthengine.googlesource.com/users/laura_csp/wetland_hydroperiods
+```
+2. Fetch branches / commits from the upstream repo
+```sh
+git fetch upstream
+```
+3. Checkout your fork's local default branch
+```sh
+git checkout main
+```
+4 Merge changes on the upstream default branch into your local default branch
+```sh
+git merge upstream/master --allow-unrelated-histories
+```
+For more on the ` --allow-unrelated-histories` tag, see this [post](https://www.educative.io/edpresso/the-fatal-refusing-to-merge-unrelated-histories-git-error).
