@@ -65,22 +65,13 @@ var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat
 // -----------------------------------------------------------------
 
 // Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-var imageL5 = ee.ImageCollection("LANDSAT/LT05/C02/T1_L2")
-  // Replaced deprecated Collection 1 'LANDSAT/LT05/C01/T1_SR'
-  .filterDate(startDate, endDate)
-  .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
-  .filterBounds(geometry) // Use AOI or geometry from above
-  .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
+var imageL5 = utils.load_images("LANDSAT/LT05/C02/T1_L2");
 var imageL8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
-  // Replaced deprecated Collection 1 'LANDSAT/LC08/C01/T1_SR'
   .filterDate(startDate, endDate)
   .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
   .filterBounds(geometry) // Use AOI or geometry from above
   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
 
-// From USGS: Landsat Collection 2 (C02) marks the second major reprocessing effort on the Landsat archive by the USGS
-// that results in several data product improvements that harness recent advancements in data processing,
-// algorithm development, and data access and distribution capabilities
 
 // print (imageL5, 'L5 image collection');
 // Useful for looking up individual dates or wonky values
