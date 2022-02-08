@@ -181,11 +181,11 @@ print(eddiSeries, climVar2);
 var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
   
-var sweSeries = viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
-print(sweSeries, climVar3);
+// var sweSeries = viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
+// print(sweSeries, climVar3);
 
-var prSeries = viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
-print(prSeries, climVar4);
+// var prSeries = viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
+// print(prSeries, climVar4);
 
 // -----------------------------------------------------------------
 // Export Data
