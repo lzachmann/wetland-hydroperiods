@@ -115,16 +115,16 @@ Map.addLayer(L8_scene, L8_vizParams, 'Selected Landsat 8 scene');
 
 // Run SMA function on L5 stack
 var smaAllL5 = imageL5
-.map(smaUnmixL5)
-.map(cloudMask)
-// .map(cloudUnmask) // should unmask NA values & replace w -9999 (for export)
+.map(utils.smaUnmixL5)
+.map(utils.cloudMask)
+// .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 ; 
 
 // Run SMA function on L8 stack
 var smaAllL8 = imageL8
-.map(smaUnmixL8)
-.map(cloudMask)
-// .map(cloudUnmask) // should unmask NA values & replace w -9999 (for export)
+.map(utils.smaUnmixL8)
+.map(utils.cloudMask)
+// .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 ;
 
 // Merge SMA datasets.
@@ -143,15 +143,15 @@ Map.addLayer(smaAll,  vizParams, 'water', false);
 
 // Add indices (NDVI, NDMI, NDWI, MNDWI)
 var L5index = imageL5
-.map(cloudMask)
-.map(addIndexL5)
-.map(createTimeBand_indices);
+.map(utils.cloudMask)
+.map(utils.addIndexL5)
+.map(utils.createTimeBand_indices);
 // print (L5index);
 
 var L8index = imageL8
-.map(cloudMask)
-.map(addIndexL8)
-.map(createTimeBand_indices);
+.map(utils.cloudMask)
+.map(utils.addIndexL8)
+.map(utils.createTimeBand_indices);
 // print (L8index);
 
 var indicesAll = ee.ImageCollection(L5index.merge(L8index));
