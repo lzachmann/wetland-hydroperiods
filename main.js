@@ -100,15 +100,6 @@ var L8_vizParams = {'bands': ['SR_B4','SR_B3','SR_B2'], gamma: 1, min: 1000, max
 var L8_scene = ee.Image(sceneID);
 Map.addLayer(L8_scene, L8_vizParams, 'Selected Landsat 8 scene');
 
-
-
-// -----------------------------------------------------------------
-// Functions
-// -----------------------------------------------------------------
-
-
-
-
 // ----------------------------------------------
 // Run SMA over image collection - time series
 // ----------------------------------------------
