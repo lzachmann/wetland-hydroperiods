@@ -36,13 +36,11 @@ var utils = require("users/laura_csp/wetland_hydroperiods:utils.js");
 
 // Option 1: Draw a polygon of interest using GEE draw tool
 var AOI = focalArea2; // AOI = area of interest
-// print(AOI)
 // Map.addLayer(AOI, {}, 'wetlands');
 // Map.centerObject(AOI, 18);
 
 // Option 2: Load a shapefile of wetland polygon(s) -- can use 'maxExtents' above or load your own
 var geometry = maxExtents;
-// print(geometry)
 // Map.addLayer(geometry, {}, 'wetlands');
 // Map.centerObject(geometry, 10);
 
@@ -67,15 +65,13 @@ var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat
 // -----------------------------------------------------------------
 
 // Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-var imageL5 = ee
-  .ImageCollection("LANDSAT/LT05/C02/T1_L2")
+var imageL5 = ee.ImageCollection("LANDSAT/LT05/C02/T1_L2")
   // Replaced deprecated Collection 1 'LANDSAT/LT05/C01/T1_SR'
   .filterDate(startDate, endDate)
   .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
   .filterBounds(geometry) // Use AOI or geometry from above
   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
-var imageL8 = ee
-  .ImageCollection("LANDSAT/LC08/C02/T1_L2")
+var imageL8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
   // Replaced deprecated Collection 1 'LANDSAT/LC08/C01/T1_SR'
   .filterDate(startDate, endDate)
   .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
@@ -130,17 +126,15 @@ var L5index = imageL5
   .map(utils.cloudMask)
   .map(utils.addIndexL5)
   .map(utils.createTimeBand_indices);
-// print (L5index);
 
 var L8index = imageL8
   .map(utils.cloudMask)
   .map(utils.addIndexL8)
   .map(utils.createTimeBand_indices);
-// print (L8index);
 
 var indicesAll = ee.ImageCollection(L5index.merge(L8index));
 // print(indicesAll, 'all indices');
-//var indicesAll = indicesAll.sort('CLOUD_COVER');
+// var indicesAll = indicesAll.sort('CLOUD_COVER');
 
 // -----------------------------------------------------------------
 // Plotting for data exploration
