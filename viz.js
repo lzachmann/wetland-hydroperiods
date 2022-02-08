@@ -20,7 +20,7 @@ viz.params.sma = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
 
 // ==== plotting ====
 
-viz.chart.vi = function(imageCollection, regions, band, color) {
+viz.chart.nd = function(imageCollection, regions, band, color) {
   return (
     ui.Chart.image.seriesByRegion(	
     imageCollection,	
@@ -41,5 +41,20 @@ viz.chart.vi = function(imageCollection, regions, band, color) {
   })
     );
 };
+
+viz.chart.clim = function(imageCollection, region, band) {
+  return (
+    ui.Chart.image.series(imageCollection.select(band), region)
+  .setOptions({	
+    interpolateNulls: false,	
+    lineWidth: 1,	
+    pointSize: 3,	
+    title: band + " over Time at a Single Polygon",	
+    vAxis: { title: band },	
+    hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },	
+  })
+    );
+};
+
 
 exports = viz;
