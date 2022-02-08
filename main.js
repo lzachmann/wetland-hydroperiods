@@ -17,7 +17,7 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Imports
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
-// var viz = require("users/laura_csp/wetland_hydroperiods:src/viz.js");
+// var viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
@@ -90,7 +90,7 @@ var imageL8 = utils.load_and_filter(
 // print(imageL8, "L8 image collection");
 // // Map Landsat scene of interest
 var L8_scene = ee.Image(sceneID);
-Map.addLayer(L8_scene, viz.params.L8, "Selected Landsat 8 scene");
+Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 
 // ----------------------------------------------
 // Run SMA over image collection - time series
@@ -108,7 +108,7 @@ var smaAll = smaAll.sort("date");
 
 // Display SMA image - first date
 print(smaAll, "sma all");
-Map.addLayer(smaAll, viz.params.sma, "water", false);
+Map.addLayer(smaAll, utils.viz.params.sma, "water", false);
 
 // -------------------------------------------------------------------------
 // Run Normalized Difference indices over image collection - time series
@@ -150,11 +150,11 @@ var smaWater = ui.Chart.image
 print(smaWater, "Hydrograph");
 
 // NDVI time series
-var timeSeries_index1 = viz.chart.nd(indicesAll, AOI, index1, "#0f8755");
+var timeSeries_index1 = utils.viz.chart.nd(indicesAll, AOI, index1, "#0f8755");
 print(timeSeries_index1, index1);
 
 // NDWI time series
-var timeSeries_index2 = viz.chart.nd(indicesAll, AOI, index2, "#0000FF");
+var timeSeries_index2 = utils.viz.chart.nd(indicesAll, AOI, index2, "#0000FF");
 print(timeSeries_index2, index2);
 
 // -----------------------------------------------------------------
@@ -170,21 +170,21 @@ var gridmet = ee
   .filterBounds(AOI); // filter by polygon
 
 // PDSI time series
-var pdsiSeries = viz.chart.gmet(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
+var pdsiSeries = utils.viz.chart.gmet(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
 print(pdsiSeries, climVar1);
 
 // EDDI time series
-var eddiSeries = viz.chart.gmet(gridmet, AOI, climVar2);
+var eddiSeries = utils.viz.chart.gmet(gridmet, AOI, climVar2);
 print(eddiSeries, climVar2);
 
 // Load and filter monthly TerraClimate data
 var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
   
-var sweSeries = viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
+var sweSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
 print(sweSeries, climVar3);
 
-var prSeries = viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
+var prSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
 print(prSeries, climVar4);
 
 // -----------------------------------------------------------------
