@@ -11,4 +11,6 @@ viz.L8_vizParams = {
   opacity: 1,
 }; // Define L8 visualization parameters
 
+viz.vizParams = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
+
 exports = viz;
