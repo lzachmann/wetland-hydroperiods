@@ -249,4 +249,15 @@ utils.addIndexL8 = function (image) {
   ); // L8: SR_B3=green, SR_B6=SWIR (Xu 2006)
 };
 
+utils.load_images = function (id) {
+  return (
+    ee.ImageCollection(id)
+      .filterDate(startDate, endDate)
+      .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
+      .filterBounds(geometry) // Use AOI or geometry from above
+      .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")) // Select days of the year for analysis
+  );
+};
+
+
 exports = utils;
