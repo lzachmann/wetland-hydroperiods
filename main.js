@@ -91,9 +91,8 @@ var smaAll = ee.ImageCollection(smaAllL5.merge(smaAllL8));
 var smaAll = smaAll.sort("date");
 
 //Display SMA image - first date
-var vizParams = { bands: "water", gamma: 1, min: 0, max: 900, opacity: 1 };
 print(smaAll, "sma all");
-Map.addLayer(smaAll, vizParams, "water", false);
+Map.addLayer(smaAll, viz.vizParams, "water", false);
 
 // -------------------------------------------------------------------------
 // Run Normalized Difference indices over image collection - time series
