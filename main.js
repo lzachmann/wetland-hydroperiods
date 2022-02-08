@@ -170,11 +170,11 @@ var gridmet = ee
   .filterBounds(AOI); // filter by polygon
 
 // PDSI time series
-var pdsiSeries = viz.chart.clim(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
+var pdsiSeries = viz.chart.gmet(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
 print(pdsiSeries, climVar1);
 
 // EDDI time series
-var eddiSeries = viz.chart.clim(gridmet, AOI, climVar2);
+var eddiSeries = viz.chart.gmet(gridmet, AOI, climVar2);
 print(eddiSeries, climVar2);
 
 // Load and filter monthly TerraClimate data
