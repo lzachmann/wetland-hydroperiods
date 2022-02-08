@@ -23,3 +23,5 @@ git checkout main
 git merge upstream/master --allow-unrelated-histories
 ```
 For more on the ` --allow-unrelated-histories` tag, see this [post](https://www.educative.io/edpresso/the-fatal-refusing-to-merge-unrelated-histories-git-error).
+
+To push changes on the fork to the upstream repo, use `git push upstream`. Any / all merges of these changes onto the upstream default branch (`master`) will need to be done from the upstream repo by those with access.
