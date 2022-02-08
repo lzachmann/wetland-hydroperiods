@@ -249,7 +249,7 @@ utils.addIndexL8 = function (image) {
   ); // L8: SR_B3=green, SR_B6=SWIR (Xu 2006)
 };
 
-utils.load_and_filter = function (id) {
+utils.load_and_filter = function (id, startDate, endDate, cloudCover, geometry, startDOY, endDOY) {
   return (
     ee.ImageCollection(id)
       .filterDate(startDate, endDate)
