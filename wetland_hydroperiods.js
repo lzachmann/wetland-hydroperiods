@@ -15,6 +15,8 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
     maxExtents = ee.FeatureCollection("users/laura_csp/maxExtents_test"),
     ponds = ee.FeatureCollection("users/laura_csp/ponds_test");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
+var utils = require('users/laura_csp/wetland_hydroperiods:utils.js');
+
 // National Park Service & Conservation Science Partners
 // Northern Colorado Plateau Network (NCPN) Wetland Hydroperiods Project
 
