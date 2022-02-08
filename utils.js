@@ -259,5 +259,4 @@ utils.load_and_filter = function (id, startDate, endDate, cloudCover, geometry, 
   );
 };
 
-
 exports = utils;
