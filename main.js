@@ -65,30 +65,21 @@ var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat
 // -----------------------------------------------------------------
 
 // Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-var imageL5 = utils.load_and_filter("LANDSAT/LT05/C02/T1_L2");
-var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2");
-// ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
-//   .filterDate(startDate, endDate)
-//   .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
-//   .filterBounds(geometry) // Use AOI or geometry from above
-//   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
+var imageL5 = utils.load_and_filter("LANDSAT/LT05/C02/T1_L2", startDate, endDate, cloudCover, geometry, startDOY, endDOY);
+var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2", startDate, endDate, cloudCover, geometry, startDOY, endDOY);
 
-
-// print (imageL5, 'L5 image collection');
-// Useful for looking up individual dates or wonky values
-// (often caused by cloud/cloud shadow not masked out)
-print(imageL8, "L8 image collection");
-
-// Map Landsat scene of interest
-var L8_vizParams = {
-  bands: ["SR_B4", "SR_B3", "SR_B2"],
-  gamma: 1,
-  min: 1000,
-  max: 65455,
-  opacity: 1,
-}; // Define L8 visualization parameters
-var L8_scene = ee.Image(sceneID);
-Map.addLayer(L8_scene, L8_vizParams, "Selected Landsat 8 scene");
+// // print (imageL5, 'L5 image collection'); // Useful for looking up individual dates or wonky values (often caused by cloud/cloud shadow not masked out)
+// print(imageL8, "L8 image collection");
+// // Map Landsat scene of interest
+// var L8_vizParams = {
+//   bands: ["SR_B4", "SR_B3", "SR_B2"],
+//   gamma: 1,
+//   min: 1000,
+//   max: 65455,
+//   opacity: 1,
+// }; // Define L8 visualization parameters
+// var L8_scene = ee.Image(sceneID);
+// Map.addLayer(L8_scene, L8_vizParams, "Selected Landsat 8 scene");
 
 // ----------------------------------------------
 // Run SMA over image collection - time series
