@@ -65,12 +65,13 @@ var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat
 // -----------------------------------------------------------------
 
 // Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-var imageL5 = utils.load_images("LANDSAT/LT05/C02/T1_L2");
-var imageL8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
-  .filterDate(startDate, endDate)
-  .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
-  .filterBounds(geometry) // Use AOI or geometry from above
-  .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
+var imageL5 = utils.load_and_filter("LANDSAT/LT05/C02/T1_L2");
+var imageL8 = utils.load_and_filter("LANDSAT/LC08/C02/T1_L2");
+// ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+//   .filterDate(startDate, endDate)
+//   .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
+//   .filterBounds(geometry) // Use AOI or geometry from above
+//   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
 
 
 // print (imageL5, 'L5 image collection');
