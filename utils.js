@@ -180,3 +180,5 @@ utils.addIndexL8 = function(image) {
   // MNDWI  green and short wave infrared 1
   .addBands(image.normalizedDifference(['SR_B3','SR_B6']).rename('MNDWI')); // L8: SR_B3=green, SR_B6=SWIR (Xu 2006)
 };
+
+exports = utils;
