@@ -362,19 +362,19 @@ var timeSeries_index1 = ui.Chart.image.seriesByRegion(indicesAll, AOI,
       pointSize: 4,
       colors:['0f8755']
 });
-print(timeSeries_index1, 'NDVI');
+print(timeSeries_index1, index1);
 
 // NDWI time series
 var timeSeries_index2 = ui.Chart.image.seriesByRegion(indicesAll, AOI,
     ee.Reducer.mean(), index2, 30, 'system:time_start', 'system:index')
       .setChartType('ScatterChart').setOptions({
         title: 'NDWI',
-        vAxis: {title: 'NDWI'},
+        vAxis: {title: index2},
       lineWidth: 1,
       pointSize: 4,
       colors:['#0000FF']
 });
-print(timeSeries_index2, 'NDWI');
+print(timeSeries_index2, index2);
 
 
 // -----------------------------------------------------------------
