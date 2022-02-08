@@ -170,38 +170,27 @@ var gridmet = ee
   .filterBounds(AOI); // filter by polygon
 
 // PDSI time series
-var pdsiSeries = viz.chart.clim(gridmet, geometry, climVar1);
+var pdsiSeries = viz.chart.clim(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
 print(pdsiSeries, climVar1);
-// var pdsiSeries = ui.Chart.image
+
+// EDDI time series
+var eddiSeries = viz.chart.clim(gridmet, AOI, climVar2);
+print(eddiSeries, climVar2);
+
+// var eddiSeries = ui.Chart.image
 //   .series({
-//     imageCollection: gridmet.select(climVar1), // PDSI - Palmer Drought Severity Index
-//     region: geometry, // Select focal area or wetland
+//     imageCollection: gridmet.select(climVar2), // eddi1y - aggregated over last year
+//     region: AOI, // Select focal area or wetland
 //   })
 //   .setOptions({
 //     interpolateNulls: false,
 //     lineWidth: 1,
 //     pointSize: 3,
-//     title: "PDSI over Time at a Single Polygon",
-//     vAxis: { title: "PDSI" },
+//     title: "EDDI (1-yr) over Time at a Single Polygon",
+//     vAxis: { title: "EDDI" },
 //     hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },
 //   });
-// print(pdsiSeries, "pdsi");
-
-// EDDI time series
-var eddiSeries = ui.Chart.image
-  .series({
-    imageCollection: gridmet.select(climVar2), // eddi1y - aggregated over last year
-    region: AOI, // Select focal area or wetland
-  })
-  .setOptions({
-    interpolateNulls: false,
-    lineWidth: 1,
-    pointSize: 3,
-    title: "EDDI (1-yr) over Time at a Single Polygon",
-    vAxis: { title: "EDDI" },
-    hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },
-  });
-print(eddiSeries, "eddi");
+// print(eddiSeries, "eddi");
 
 // Load and filter monthly TerraClimate data
 var monthlyClim = ee
