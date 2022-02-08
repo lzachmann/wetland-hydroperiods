@@ -49,7 +49,7 @@ viz.chart.clim = function(imageCollection, region, band) {
     interpolateNulls: false,	
     lineWidth: 1,	
     pointSize: 3,	
-    title: band + " over Time at a Single Polygon",	
+    title: band.toUpperCase() + " over Time at a Single Polygon",	
     vAxis: { title: band },	
     hAxis: { title: "Date", format: "YYYY-MMM", gridlines: { count: 12 } },	
   })
