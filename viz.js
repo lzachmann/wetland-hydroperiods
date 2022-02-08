@@ -2,6 +2,7 @@
 // var viz = require('users/laura_csp/wetland_hydroperiods:viz.js');
 
 var viz = {};
+viz.params = {}; // visualization parameter
 
 viz.params.L8 = {
   bands: ["SR_B4", "SR_B3", "SR_B2"],
