@@ -1,4 +1,6 @@
 # wetland-hydroperiods
+A fork of a Google Earth Engine project, accessible by those with read/write permissions [here](
+https://code.earthengine.google.com/?accept_repo=users/laura_csp/wetland_hydroperiods).
 
 ## Getting started
 
