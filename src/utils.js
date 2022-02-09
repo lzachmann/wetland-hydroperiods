@@ -196,6 +196,7 @@ utils.load_and_filter = function (
 
 
 utils.export_ts = function(ImageCollection) {
+  // region, band
   var ts = ImageCollection.map(function (image) {
   // Calculate mean EDDI per wetland polygon
   return image
