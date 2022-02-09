@@ -210,7 +210,7 @@ print(prSeries, climVar4);
 var smaSum = smaAll
     .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
     .map(function (i) {
-  // Sum SMA proportions by wetland polygon
+  // Sum SMA areas (or proportions) by wetland polygon
   return i.reduceRegions(geometry, ee.Reducer.sum());
 });
 // Flatten collection and remove geometry for export
