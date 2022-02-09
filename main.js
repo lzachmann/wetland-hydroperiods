@@ -19,7 +19,7 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
 // print(utils.endmembers.get('dflt')) //getEndmembers('L5', useCustomEndMembers)
 print(utils.getEndmembers("L5", true))
-/*
+// /*
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
 // Maintainer(s): Luke Zachmann
