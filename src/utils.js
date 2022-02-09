@@ -8,8 +8,8 @@ var utils = {};
 var viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 utils.viz = viz;
 
-var endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
-utils.endmembers = endmembers;
+utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
+// utils.endmembers = endmembers;
 
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
@@ -79,7 +79,7 @@ utils.createTimeBand_indices = function (image) {
 };
 
 // Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
-utils.smaUnmixL5 = function (image) {
+utils.smaUnmixL5 = function (image, endmembers) {
   // Select 6 spectral bands
   var s_image = image.select(
     "SR_B1",
@@ -104,18 +104,18 @@ utils.smaUnmixL5 = function (image) {
 
   // Constrained to one (no negative values)
   var unmixed = s_image.unmix(
-    endmembers.default.L5,
+    endmembers.dflt.L5,
     true,
     true
   );
   // Add RMSE
-  var endmembers = ee.List([
-    waterValuesL5,
-    grassValuesL5,
-    treeValuesL5,
-    vegValuesL5,
-  ]);
-  var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
+  // var endmembers = ee.List([
+  //   waterValuesL5,
+  //   grassValuesL5,
+  //   treeValuesL5,
+  //   vegValuesL5,
+  // ]);
+  var endArray = ee.Image.constant(ee.Array(endmembers.dflt.L5).transpose(0, 1));
   var unmixArray = unmixed.toArray().toArray(1);
   var origArray = s_image.toArray().toArray(1);
   // Compute modeled value
