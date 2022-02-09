@@ -80,6 +80,7 @@ utils.createTimeBand_indices = function (image) {
 
 // Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
 utils.smaUnmixL5 = function (image, endmembers) {
+  if (endmembers === undefined) endmembers = utils.endmembers.dflt.L5;
   // Select 6 spectral bands
   var s_image = image.select(
     "SR_B1",
@@ -104,7 +105,7 @@ utils.smaUnmixL5 = function (image, endmembers) {
 
   // Constrained to one (no negative values)
   var unmixed = s_image.unmix(
-    endmembers.dflt.L5,
+    endmembers,
     true,
     true
   );
@@ -115,7 +116,7 @@ utils.smaUnmixL5 = function (image, endmembers) {
   //   treeValuesL5,
   //   vegValuesL5,
   // ]);
-  var endArray = ee.Image.constant(ee.Array(endmembers.dflt.L5).transpose(0, 1));
+  var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
   var unmixArray = unmixed.toArray().toArray(1);
   var origArray = s_image.toArray().toArray(1);
   // Compute modeled value
