@@ -102,10 +102,9 @@ utils.smaUnmixL5 = function (image) {
   // else use default "dummy' endmembers from Yellowstone
   // (see Meghan's code for similar example)
 
-  TODOTPDP
   // Constrained to one (no negative values)
   var unmixed = s_image.unmix(
-    [waterValuesL5, grassValuesL5, treeValuesL5, vegValuesL5],
+    endmembers.default.L5,
     true,
     true
   );
