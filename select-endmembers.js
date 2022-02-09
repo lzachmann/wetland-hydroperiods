@@ -96,7 +96,7 @@ var em_L5= ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
 
 // Endmembers for Landsat 5
 var em_L5_noclouds = em_L5.filterMetadata('CLOUD_COVER','less_than',10).select("B1","B2","B3","B4","B5","B7").mean();
-print(em_L5_noclouds, "endmember_L5_noclouds");
+// print(em_L5_noclouds, "endmember_L5_noclouds");
 // water
 var waterL5 = em_L5_noclouds.reduceRegion({reducer: ee.Reducer.mean(),
 geometry:water_em, scale: 30, maxPixels: 1e8});
