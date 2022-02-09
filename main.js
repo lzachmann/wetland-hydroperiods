@@ -98,24 +98,7 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 // Run SMA over image collection - time series
 // ----------------------------------------------
 
-// Run SMA function on L5 stack
-// if (useCustomEndMembers) {
-//   var myfun = function(image) {
-//     return utils.smaUnmixL5(image, utils.endmembers.cstm.L5)
-//   }
-// } else {utils.smaUnmixL5}
-// TODO: if useCustomEndMembers then endmembers = utils.endmembers.cstm.L5 else none
-var getEndmembers = function(stack, useCustomEndMembers) {
-  if (useCustomEndMembers) {
-    var out = utils.endmembers.cstm[stack];
-  } else {
-    out = utils.endmembers.dflt[stack];
-  }
-  return out
-};
-// print(utils.endmembers.dflt)
-// print(endmembers.cstm)
-print(ee.Dictionary(utils.endmembers).combine(endmembers))
+
 // print(utils.endmembers.cstm.L5) //getEndmembers('L5', useCustomEndMembers)
 // var smaAllL5 = imageL5.map(utils.smaUnmix(utils.smaUnmixL5, useCustomEndMembers)).map(utils.cloudMask);
 // print(smaAllL5)
