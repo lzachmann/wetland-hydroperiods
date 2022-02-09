@@ -127,7 +127,7 @@ var vegvaluesmeanL5 = vegL5.values();
 // combined
 // var spectralsigs_L5 = ee.Array([watervaluesmeanL5, vegvaluesmeanL5, treevaluesmeanL5, grassvaluesmeanL5, mudvaluesmeanL5])
 var spectralsigs_L5 = ee.Array([watervaluesmeanL5, grassvaluesmeanL5, treevaluesmeanL5, vegvaluesmeanL5])
-print(spectralsigs_L5, "spectralsigs_L5")
+if (verbose) print(spectralsigs_L5, "spectralsigs_L5")
 
 // Endmembers for Landsat 8
 var em_L8_noclouds = em_L8.filterMetadata('CLOUD_COVER','less_than',10).select("B2","B3","B4","B5","B6","B7").median();
@@ -160,7 +160,7 @@ var vegvaluesmeanL8 = vegL8.values();
 // combined
 // var spectralsigs_L8 = ee.Array([watervaluesmeanL8, vegvaluesmeanL8, treevaluesmeanL8, grassvaluesmeanL8, mudvaluesmeanL8])
 var spectralsigs_L8 = ee.Array([watervaluesmeanL8, grassvaluesmeanL8, treevaluesmeanL8, vegvaluesmeanL8])
-print(spectralsigs_L8, "spectralsigs_L8")
+if (verbose) print(spectralsigs_L8, "spectralsigs_L8")
 
 // Make a BarChart from the table and options. //
 
