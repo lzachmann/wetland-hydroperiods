@@ -113,11 +113,10 @@ utils.getSpectralBands = function(image, stack) {
 
 utils.getEndmembers = function(stack, useCustomEndMembers) {
   if (useCustomEndMembers) {
-    endmembers = other_endmembers.cstm[stack]; // was: utils.endmembers.cstm
+    return other_endmembers.cstm[stack]; // was: utils.endmembers.cstm
   } else {
-    endmembers = utils.endmembers.dflt[stack];
+    return utils.endmembers.dflt[stack];
   }
-  return endmembers;
 };
 
 // Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
