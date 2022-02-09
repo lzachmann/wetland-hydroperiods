@@ -105,9 +105,17 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 //   }
 // } else {utils.smaUnmixL5}
 // TODO: if useCustomEndMembers then endmembers = utils.endmembers.cstm.L5 else none
-
-var smaAllL5 = imageL5.map(this_fun).map(utils.cloudMask);
-print(smaAllL5)
+var getEndmembers = function(stack, useCustomEndMembers) {
+  if (useCustomEndMembers) {
+    var out = utils.endmembers.cstm[stack];
+  } else {
+    out = utils.endmembers.dflt[stack];
+  }
+  return out
+};
+print(utils.endmembers.dflt.L5) //getEndmembers('L5', useCustomEndMembers)
+// var smaAllL5 = imageL5.map(utils.smaUnmix(utils.smaUnmixL5, useCustomEndMembers)).map(utils.cloudMask);
+// print(smaAllL5)
 // // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // // Run SMA function on L8 stack
 // var smaAllL8 = imageL8.map(utils.smaUnmixL8).map(utils.cloudMask);
