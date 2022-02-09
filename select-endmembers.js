@@ -51,6 +51,7 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
 // Author: M. Halabisky 
 // Purpose: Select endmembers for use in spectral mixture analysis
 
+var verbose = false;
 var endmembers = {};
 
 // Set parameters
@@ -198,7 +199,7 @@ var spectraChartL5 = ui.Chart.image.regions(
     em,  ee.Reducer.mean(), 30, 'label', wavelengths)
         .setChartType('ScatterChart')
         .setOptions(options);
-print(spectraChartL5, 'L5 spectral em chart'); // Display the L5 chart.
+if (verbose) print(spectraChartL5, 'L5 spectral em chart'); // Display the L5 chart.
 
 // Create the L8 chart and set options.
 var spectraChartL8 = ui.Chart.image.regions(
@@ -207,7 +208,7 @@ var spectraChartL8 = ui.Chart.image.regions(
     em,  ee.Reducer.mean(), 30, 'label', wavelengths)
         .setChartType('ScatterChart')
         .setOptions(options);
-print(spectraChartL8, 'L8 spectral em chart'); // Display the L8 chart.
+if (verbose) print(spectraChartL8, 'L8 spectral em chart'); // Display the L8 chart.
 
 endmembers.cstm = {};
 endmembers.cstm.L5 = spectralsigs_L5;
