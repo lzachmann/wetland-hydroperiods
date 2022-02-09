@@ -112,7 +112,7 @@ utils.getSpectralBands = function(image, stack) {
 
 utils.getEndmembers = function(stack, useCustomEndMembers) {
   if (useCustomEndMembers) {
-    return other_endmembers.cstm[stack]; // was: utils.endmembers.cstm
+    return other_endmembers.cstm[stack].getInfo(); // was: utils.endmembers.cstm
   } else {
     return utils.endmembers.dflt[stack];
   }
