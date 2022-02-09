@@ -5,8 +5,8 @@ var utils = {};
 // utils.dir = 'TBD'; // base path for all assets
 
 // ---- Import submodules ----
-var viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
-utils.viz = viz;
+utils.viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
+// utils.viz = viz;
 
 utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
 // utils.endmembers = endmembers;
