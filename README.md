@@ -15,7 +15,7 @@ For the report, please see this [Google Doc](https://docs.google.com/document/d/
 ## Notes
 We use Landsat Collection 2 (C02), which marks the second major reprocessing effort on the Landsat archive by the USGS. C02 replaces Collection 1 assets (`'LANDSAT/LT05/C01/T1_SR'` and `'LANDSAT/LC08/C01/T1_SR'`).
 
-Spectral bands used for spectral mixture analysis. Note that the band indices for a given band name are different for Landsat 5 Thematic Mapper (L5) and Landsat 8 Operational Land Imager (L8) imagery.
+Spectral bands used for spectral mixture analysis. Note that the band indices for a given band name are different for Landsat 5 Thematic Mapper (L5) and Landsat 8 Operational Land Imager (L8) imagery. You'll see these differences appear [here](https://github.com/lzachmann/wetland-hydroperiods/blob/main/src/utils.js#L83-L89).
 | Band name           | L5 Band / Wavelength (micrometers) | L8 Band / Wavelength (micrometers) |
 |---------------------|------------------------------------|------------------------------------|
 | Blue                | Band 1 / 0.45-0.52                 | Band 2 / 0.45-0.51                 |
