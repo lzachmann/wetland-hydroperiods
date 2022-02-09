@@ -17,7 +17,9 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Imports
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
+// print(utils.getEndmembers("L5", true))
 
+// /*
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
 // Maintainer(s): Luke Zachmann
@@ -60,6 +62,7 @@ var climVar2 = "eddi1y"; // eddi2y = Evaporative Drought Demand Index aggregated
 var climVar3 = "swe"; // Choose TerraClimate indices: swe = Snow Water Equivalent
 var climVar4 = "pr"; // pr = Precipitation accumulation
 var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat scene for validation
+var useCustomEndMembers = false;
 
 // -----------------------------------------------------------------
 // Image collections
@@ -95,11 +98,14 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 // Run SMA over image collection - time series
 // ----------------------------------------------
 
-// Run SMA function on L5 stack
-var smaAllL5 = imageL5.map(utils.smaUnmixL5).map(utils.cloudMask);
+var smaAllL5 = imageL5
+  .map(utils.smaUnmixFun("L5", useCustomEndMembers))
+  .map(utils.cloudMask);
 // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // Run SMA function on L8 stack
-var smaAllL8 = imageL8.map(utils.smaUnmixL8).map(utils.cloudMask);
+var smaAllL8 = imageL8
+  .map(utils.smaUnmixFun("L8", useCustomEndMembers))
+  .map(utils.cloudMask);
 // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // Merge SMA datasets.
 var smaAll = ee.ImageCollection(smaAllL5.merge(smaAllL8));
@@ -177,13 +183,26 @@ var eddiSeries = utils.viz.chart.gmet(gridmet, AOI, climVar2);
 print(eddiSeries, climVar2);
 
 // Load and filter monthly TerraClimate data
-var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
+var monthlyClim = ee
+  .ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
-  
-var sweSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
+
+var sweSeries = utils.viz.chart.tclim(
+  monthlyClim,
+  AOI,
+  climVar3,
+  startDate,
+  endDate
+);
 print(sweSeries, climVar3);
 
-var prSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
+var prSeries = utils.viz.chart.tclim(
+  monthlyClim,
+  AOI,
+  climVar4,
+  startDate,
+  endDate
+);
 print(prSeries, climVar4);
 
 // -----------------------------------------------------------------
@@ -319,3 +338,5 @@ var prTimeSeries = TerraClimate.map(function (image) {
   .select([".*"], null, false);
 // Export csv file
 Export.table.toDrive(prTimeSeries, "PR_timeSeries");
+
+//*/
