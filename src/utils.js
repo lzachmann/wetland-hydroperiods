@@ -194,4 +194,27 @@ utils.load_and_filter = function (
     .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
 };
 
+
+utils.export_ts = function(ImageCollection) {
+  var ts = ImageCollection.map(function (image) {
+  // Calculate mean EDDI per wetland polygon
+  return image
+    .select("eddi1y")
+    .reduceRegions({
+      collection: geometry.select("pond_ID"),
+      reducer: ee.Reducer.mean(),
+      scale: 30,
+    })
+    .filter(ee.Filter.neq("mean", null))
+    .map(function (f) {
+      return f.set("date", image.id());
+    });
+  // Flatten collection and remove geometry for export
+  })
+  .flatten()
+  .select([".*"], null, false);
+  Export.table.toDrive(ts, "EDDI-1yr_timeSeries");
+}; //utils.export_ts(Gridmet);
+
+
 exports = utils;
