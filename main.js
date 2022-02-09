@@ -104,6 +104,7 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 //     return utils.smaUnmixL5(image, utils.endmembers.cstm.L5)
 //   }
 // } else {utils.smaUnmixL5}
+// TODO: if useCustomEndMembers then endmembers = utils.endmembers.cstm.L5 else none
 var get_sma_unmix = function(fun, useCustom) {
   if (useCustom) {
     var myfun = function(image) {
