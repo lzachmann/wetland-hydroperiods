@@ -113,7 +113,7 @@ var getEndmembers = function(stack, useCustomEndMembers) {
   }
   return out
 };
-print(utils.endmembers.dflt.L5) //getEndmembers('L5', useCustomEndMembers)
+print(utils.endmembers.cstm.L5) //getEndmembers('L5', useCustomEndMembers)
 // var smaAllL5 = imageL5.map(utils.smaUnmix(utils.smaUnmixL5, useCustomEndMembers)).map(utils.cloudMask);
 // print(smaAllL5)
 // // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
