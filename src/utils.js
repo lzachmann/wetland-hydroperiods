@@ -68,9 +68,15 @@ utils.cloudMask = function (image) {
   return image.updateMask(cirrus(image));
 };
 
-// Function to unmask an image and replace masked NA values of (0) with (-9999) for export
+// Function to unmask an image and replace masked NA values with -9999 for export,
+// otherwise, these NAs would be turned into zeros upon export, and can't be distinguished
+// from true zeros.
 utils.cloudUnmask = function (image) {
   return image.unmask(-9999);
+};
+
+utils.oneOrNotOne = function (image) {
+  // anything that is not NA is 1, anything that is NA is -1
 };
 
 // Function to add a time band to the image (for mapping time series)
