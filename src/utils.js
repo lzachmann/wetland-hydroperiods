@@ -190,6 +190,17 @@ utils.smaUnmixL8 = function (image, endmembers) {
   return unmixedOutput;
 };
 
+utils.smaUnmix = function(fun, useCustom) {
+  if (useCustom) {
+    var myfun = function(image) {
+      return fun(image, utils.endmembers.cstm.L5)
+    }
+  } else {
+    myfun = fun
+  }
+  return myfun
+};
+
 // Functions to add Normalized Difference Indices:
 // NDVI = Normalized Difference Vegetation Index (NIR, red) - greenness
 // NDMI = Normalized Difference Moisture Index (NIR, SWIR) - water content of veg (Gao 1996)
