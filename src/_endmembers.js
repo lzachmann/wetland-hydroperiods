@@ -43,4 +43,5 @@ var waterValuesL5 = [
   };
   // print(ee.Array(ee.List(dflt.L5)))
   
+  exports = dflt;
   
