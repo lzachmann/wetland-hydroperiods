@@ -80,29 +80,15 @@ utils.createTimeBand_indices = function (image) {
   return image.addBands(image.metadata("system:time_start").divide(1e18));
 };
 
-utils.getSpectralBands = function(image, stack) {
+utils.getSpectralBands = function (image, stack) {
   if (stack === "L5") {
-    return image.select(
-    "SR_B1",
-    "SR_B2",
-    "SR_B3",
-    "SR_B4",
-    "SR_B5",
-    "SR_B7"
-  );
+    return image.select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7");
   } else if (stack === "L8") {
-    return image.select(
-    "SR_B2",
-    "SR_B3",
-    "SR_B4",
-    "SR_B5",
-    "SR_B6",
-    "SR_B7"
-  );
+    return image.select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7");
   }
 };
 
-utils.getEndmembers = function(stack, useCustomEndMembers) {
+utils.getEndmembers = function (stack, useCustomEndMembers) {
   if (useCustomEndMembers) {
     return other_endmembers.cstm[stack].getInfo(); // was: utils.endmembers.cstm
   } else {
@@ -123,11 +109,7 @@ utils.smaUnmix = function (image, stack, endmembers) {
   // *endmember values listed here = avg. endmember values from research in Yellowstone by M. Halabisky; needs fine tuning)
 
   // Constrained to one (no negative values)
-  var unmixed = s_image.unmix(
-    endmembers,
-    true,
-    true
-  );
+  var unmixed = s_image.unmix(endmembers, true, true);
   // Add RMSE
   var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
   var unmixArray = unmixed.toArray().toArray(1);
@@ -150,12 +132,14 @@ utils.smaUnmix = function (image, stack, endmembers) {
   return unmixedOutput;
 };
 
-utils.smaUnmixFun = function(stack, useCustomEndMembers) {
-  return (
-    function(image) {
-      return utils.smaUnmix(image, stack, utils.getEndmembers(stack, useCustomEndMembers));
-    }
-  );
+utils.smaUnmixFun = function (stack, useCustomEndMembers) {
+  return function (image) {
+    return utils.smaUnmix(
+      image,
+      stack,
+      utils.getEndmembers(stack, useCustomEndMembers)
+    );
+  };
 };
 
 // Functions to add Normalized Difference Indices:
@@ -193,14 +177,21 @@ utils.addIndexL8 = function (image) {
   ); // L8: SR_B3=green, SR_B6=SWIR (Xu 2006)
 };
 
-utils.load_and_filter = function (id, startDate, endDate, cloudCover, geometry, startDOY, endDOY) {
-  return (
-    ee.ImageCollection(id)
-      .filterDate(startDate, endDate)
-      .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
-      .filterBounds(geometry) // Use AOI or geometry from above
-      .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")) // Select days of the year for analysis
-  );
+utils.load_and_filter = function (
+  id,
+  startDate,
+  endDate,
+  cloudCover,
+  geometry,
+  startDOY,
+  endDOY
+) {
+  return ee
+    .ImageCollection(id)
+    .filterDate(startDate, endDate)
+    .filterMetadata("CLOUD_COVER", "less_than", cloudCover) // Optional % cloud filter to reduce noise
+    .filterBounds(geometry) // Use AOI or geometry from above
+    .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
 };
 
 exports = utils;
