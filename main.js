@@ -17,6 +17,8 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Imports
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
+var custom_endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
+// print(custom_endmembers)
 
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
@@ -60,6 +62,7 @@ var climVar2 = "eddi1y"; // eddi2y = Evaporative Drought Demand Index aggregated
 var climVar3 = "swe"; // Choose TerraClimate indices: swe = Snow Water Equivalent
 var climVar4 = "pr"; // pr = Precipitation accumulation
 var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat scene for validation
+var useCustomEndMembers = true;
 
 // -----------------------------------------------------------------
 // Image collections
