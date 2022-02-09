@@ -207,6 +207,9 @@ print(prSeries, climVar4);
 
 //  SMA
 // print(smaAll)
+// if there's any -1 in the polygon, return a negative value
+// qaImage consists of either -1 or 1 for every pixel
+// min(qaImage) * the sum  
 var smaSum = smaAll
     .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
     .map(function (i) {
