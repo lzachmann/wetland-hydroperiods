@@ -138,7 +138,8 @@ utils.smaUnmixL5 = function (image, endmembers) {
 };
 
 // Function to run full SMA for Landsat 8
-utils.smaUnmixL8 = function (image) {
+utils.smaUnmixL8 = function (image, endmembers) {
+  if (endmembers === undefined) endmembers = utils.endmembers.dflt.L8;
   // Select 6 spectral bands
   var s_image = image.select(
     "SR_B2",
@@ -154,36 +155,20 @@ utils.smaUnmixL8 = function (image) {
   var QA = image.select(["QA_PIXEL"]);
   // Grab endmember ('pure pixel') values for dominant cover types, for each of 6 bands
   // *endmember values listed here = avg. endmember values from research in Yellowstone by M. Halabisky; needs fine tuning)
-  var waterValuesL8 = [
-    8043.208015554676, 8080.756670825777, 7789.540509624151, 7786.326487501702,
-    7509.152834991363, 7483.721189208322,
-  ]; // Taken from water_em values calculated above, avg. values of clear pixels
-  var grassValuesL8 = [
-    8843.37311330939, 9922.24659323189, 9820.30642513859, 18351.052552552545,
-    15204.579925163256, 11326.970255970258,
-  ];
-  var treeValuesL8 = [
-    8311.864019220891, 8844.313522976367, 8811.815648494348, 12704.090524526127,
-    11673.094150957473, 9795.830875338168,
-  ];
-  // var mudValuesL8 = [1122.4565217391305,1459.6521739130435,1596.0072463768115,2802.565217391304,3012.8695652173915,2041.4347826086957];
-  var vegValuesL8 = [
-    9594.75831120915, 10436.032429814142, 10806.023896222036, 14749.24782185492,
-    16684.446507257042, 13830.471471619629,
-  ];
+  
   // Constrained to one (no negative values)
   var unmixed = s_image.unmix(
-    [waterValuesL8, grassValuesL8, treeValuesL8, vegValuesL8],
+    endmembers,
     true,
     true
   );
   // Add RMSE
-  var endmembers = ee.List([
-    waterValuesL8,
-    grassValuesL8,
-    treeValuesL8,
-    vegValuesL8,
-  ]);
+  // var endmembers = ee.List([
+  //   waterValuesL8,
+  //   grassValuesL8,
+  //   treeValuesL8,
+  //   vegValuesL8,
+  // ]);
   var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
   var unmixArray = unmixed.toArray().toArray(1);
   var origArray = s_image.toArray().toArray(1);
