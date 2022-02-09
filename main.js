@@ -62,7 +62,7 @@ var climVar2 = "eddi1y"; // eddi2y = Evaporative Drought Demand Index aggregated
 var climVar3 = "swe"; // Choose TerraClimate indices: swe = Snow Water Equivalent
 var climVar4 = "pr"; // pr = Precipitation accumulation
 var sceneID = "LANDSAT/LC08/C02/T1_L2/LC08_035033_20190707"; // Specific Landsat scene for validation
-var useCustomEndMembers = true;
+var useCustomEndMembers = false;
 
 // -----------------------------------------------------------------
 // Image collections
