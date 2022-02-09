@@ -335,4 +335,6 @@ var prTimeSeries = TerraClimate.map(function (image) {
   .select([".*"], null, false);
 Export.table.toDrive(prTimeSeries, "PR_timeSeries");
 
+Export.table.toDrive(maxExtents, 'maxExtents_export');
+
 //*/
