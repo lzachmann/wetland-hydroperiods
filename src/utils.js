@@ -200,7 +200,7 @@ utils.export_ts = function(ImageCollection) {
   var ts = ImageCollection.map(function (image) {
   // Calculate mean EDDI per wetland polygon
   return image
-    .select("eddi1y")
+    .select(band)
     .reduceRegions({
       collection: geometry.select("pond_ID"),
       reducer: ee.Reducer.mean(),
@@ -215,7 +215,7 @@ utils.export_ts = function(ImageCollection) {
   .flatten()
   .select([".*"], null, false);
   Export.table.toDrive(ts, "EDDI-1yr_timeSeries");
-}; //utils.export_ts(Gridmet);
+}; //utils.export_ts(Gridmet, "eddi1y");
 
 
 exports = utils;
