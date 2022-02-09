@@ -16,4 +16,7 @@ var waterValuesL5 = [
     16684.446507257042, 13830.471471619629,
   ];
   
+  dflt = {
+    "L5": [waterValuesL5, grassValuesL5, treeValuesL5, vegValuesL5]
+  };
   
