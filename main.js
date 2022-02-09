@@ -218,7 +218,9 @@ var smaTimeSeries = smaSum.flatten().select([".*"], null, false);
 Export.table.toDrive(smaTimeSeries, "SMA_timeSeries");
 
 // NDVI, NDWI
-var indicesMean = indicesAll.map(function (i) {
+var indicesMean = indicesAll
+  .map(utils.cloudUnmask)
+  .map(function (i) {
   // Calculate mean Normalized index per wetland polygon
   return i.reduceRegions(geometry, ee.Reducer.mean());
 });
