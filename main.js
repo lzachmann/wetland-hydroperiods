@@ -17,9 +17,8 @@ var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 // Imports
 var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
-utils.endmembers.cstm = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
-print(utils.endmembers.cstm)
-print(utils.endmembers.dflt)
+var endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
+
 
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
 // Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
@@ -114,7 +113,9 @@ var getEndmembers = function(stack, useCustomEndMembers) {
   }
   return out
 };
-print(utils.endmembers.cstm.L5) //getEndmembers('L5', useCustomEndMembers)
+print(utils.endmembers.dflt)
+print(endmembers.cstm)
+// print(utils.endmembers.cstm.L5) //getEndmembers('L5', useCustomEndMembers)
 // var smaAllL5 = imageL5.map(utils.smaUnmix(utils.smaUnmixL5, useCustomEndMembers)).map(utils.cloudMask);
 // print(smaAllL5)
 // // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
