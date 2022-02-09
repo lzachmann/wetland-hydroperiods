@@ -267,7 +267,6 @@ var pdsiTimeSeries = Gridmet.map(function (image) {
 })
   .flatten()
   .select([".*"], null, false);
-// Export csv file
 Export.table.toDrive(pdsiTimeSeries, "PDSI_timeSeries");
 
 // EDDI 1-yr
@@ -288,7 +287,6 @@ var eddiTimeSeries = Gridmet.map(function (image) {
 })
   .flatten()
   .select([".*"], null, false);
-// Export csv file
 Export.table.toDrive(eddiTimeSeries, "EDDI-1yr_timeSeries");
 
 //  Extract and summarize TERRACLIMATE metrics for export
@@ -315,7 +313,6 @@ var sweTimeSeries = TerraClimate.map(function (image) {
 })
   .flatten()
   .select([".*"], null, false);
-// Export csv file
 Export.table.toDrive(sweTimeSeries, "SWE_timeSeries");
 
 // PR (precip accum)
@@ -336,7 +333,6 @@ var prTimeSeries = TerraClimate.map(function (image) {
 })
   .flatten()
   .select([".*"], null, false);
-// Export csv file
 Export.table.toDrive(prTimeSeries, "PR_timeSeries");
 
 //*/
