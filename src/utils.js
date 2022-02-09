@@ -11,6 +11,8 @@ utils.viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
 // utils.endmembers = endmembers;
 
+print(ee.Dictionary(utils.endmembers).combine(endmembers))
+
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
 // 1-digit bits: 0 = not a high confidence pixel, 1 = high confidence pixel
@@ -189,6 +191,17 @@ utils.smaUnmixL8 = function (image, endmembers) {
     .rename("water", "grass", "tree", "veg", "rmse", "QA_PIXEL");
   return unmixedOutput;
 };
+
+utils.getEndmembers = function(stack, useCustomEndMembers) {
+  if (useCustomEndMembers) {
+    var out = utils.endmembers.cstm[stack];
+  } else {
+    out = utils.endmembers.dflt[stack];
+  }
+  return out
+};
+// print(utils.endmembers.dflt)
+// print(endmembers.cstm)
 
 utils.smaUnmix = function(fun, useCustom) {
   if (useCustom) {
