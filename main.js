@@ -101,13 +101,9 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 var smaAllL5 = imageL5
   .map(utils.smaUnmixFun("L5", useCustomEndMembers))
   .map(utils.cloudMask);
-// .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
-// Run SMA function on L8 stack
 var smaAllL8 = imageL8
   .map(utils.smaUnmixFun("L8", useCustomEndMembers))
   .map(utils.cloudMask);
-// .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
-// Merge SMA datasets.
 var smaAll = ee.ImageCollection(smaAllL5.merge(smaAllL8));
 var smaAll = smaAll.sort("date");
 
@@ -210,7 +206,9 @@ print(prSeries, climVar4);
 // -----------------------------------------------------------------
 
 //  SMA
-var smaSum = smaAll.map(function (i) {
+var smaSum = smaAll
+    .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
+    .map(function (i) {
   // Sum SMA proportions by wetland polygon
   return i.reduceRegions(geometry, ee.Reducer.sum());
 });
