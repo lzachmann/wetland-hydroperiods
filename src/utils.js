@@ -90,7 +90,7 @@ utils.createTimeBand_indices = function (image) {
 
 utils.getSpectralBands = function(image, stack) {
   if (stack === "L5") {
-    s_image = image.select(
+    return image.select(
     "SR_B1",
     "SR_B2",
     "SR_B3",
@@ -99,7 +99,7 @@ utils.getSpectralBands = function(image, stack) {
     "SR_B7"
   );
   } else if (stack === "L8") {
-    s_image = image.select(
+    return image.select(
     "SR_B2",
     "SR_B3",
     "SR_B4",
@@ -108,7 +108,6 @@ utils.getSpectralBands = function(image, stack) {
     "SR_B7"
   );
   }
-  return s_image;
 };
 
 utils.getEndmembers = function(stack, useCustomEndMembers) {
