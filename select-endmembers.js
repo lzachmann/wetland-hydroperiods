@@ -48,7 +48,7 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
           [-119.45924382761469, 47.333955157398776],
           [-119.4749508436059, 47.35867141638131]]]);
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
-// Author: M.Halabisky 
+// Author: M. Halabisky 
 // Purpose: Select endmembers for use in spectral mixture analysis
 
 
