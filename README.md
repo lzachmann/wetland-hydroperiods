@@ -15,6 +15,16 @@ For the report, please see this [Google Doc](https://docs.google.com/document/d/
 ## Notes
 We use Landsat Collection 2 (C02), which marks the second major reprocessing effort on the Landsat archive by the USGS. C02 replaces Collection 1 assets (`'LANDSAT/LT05/C01/T1_SR'` and `'LANDSAT/LC08/C01/T1_SR'`).
 
+Spectral bands used for spectral mixture analysis. Note that the band indices for a given band name are different for Landsat 5 Thematic Mapper (L5) and Landsat 8 Operational Land Imager (L8) imagery.
+| Band name           | L5 Band / Wavelength (micrometers) | L8 Band / Wavelength (micrometers) |
+|---------------------|------------------------------------|------------------------------------|
+| Blue                | Band 1 / 0.45-0.52                 | Band 2 / 0.45-0.51                 |
+| Green               | Band 2 / 0.52-0.60                 | Band 3 / 0.53-0.59                 |
+| Red                 | Band 3 / 0.63-0.69                 | Band 4 / 0.64-0.67                 |
+| Near Infrared (NIR) | Band 4 / 0.76-0.90                 | Band 5 / 0.85-0.88                 |
+| SWIR 1              | Band 5 / 1.55-1.75                 | Band 6 / 1.57-1.65                 |
+| SWIR 2              | Band 7 / 2.08-2.35                 | Band 7 / 2.11-2.29                 |
+
 ## Developer notes
 To sync the fork with the upstream repo, follow these steps:
 1. Configure a remote that points to the upstream repo
