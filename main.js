@@ -175,7 +175,7 @@ var gridmet = ee
   .filterBounds(AOI); // filter by polygon
 
 // PDSI time series
-var pdsiSeries = utils.viz.chart.gmet(gridmet, geometry, climVar1); // TODO: why geometry and not AOI?
+var pdsiSeries = utils.viz.chart.gmet(gridmet, AOI, climVar1); // TODO: why geometry and not AOI?
 print(pdsiSeries, climVar1);
 
 // EDDI time series
@@ -212,7 +212,7 @@ print(prSeries, climVar4);
 //  SMA
 var smaSum = smaAll.map(function (i) {
   // Sum SMA proportions by wetland polygon
-  return i.reduceRegions(AOI, ee.Reducer.sum());
+  return i.reduceRegions(geometry, ee.Reducer.sum());
 });
 // Flatten collection and remove geometry for export
 var smaTimeSeries = smaSum.flatten().select([".*"], null, false);
