@@ -43,6 +43,5 @@ var vegValuesL8 = [
 endmembers.dflt = {};
 endmembers.dflt.L5 = [waterValuesL5, grassValuesL5, treeValuesL5, vegValuesL5];
 endmembers.dflt.L8 = [waterValuesL8, grassValuesL8, treeValuesL8, vegValuesL8];
-// print(ee.Array(ee.List(dflt.L5)))
 
 exports = endmembers;
