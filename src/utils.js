@@ -5,13 +5,18 @@ var utils = {};
 // utils.dir = 'TBD'; // base path for all assets
 
 // ---- Import submodules ----
+
+// Vizualization utilities
 utils.viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 // utils.viz = viz;
 
+// Default endmembers
 utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
 // utils.endmembers = endmembers;
 
-print(ee.Dictionary(utils.endmembers).combine(endmembers))
+// Custom endmembers
+var other_endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
+utils.endmembers = ee.Dictionary(utils.endmembers).combine(other_endmembers);
 
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
@@ -98,12 +103,6 @@ utils.smaUnmixL5 = function (image, endmembers) {
   var QA = image.select(["QA_PIXEL"]);
   // Grab endmember ('pure pixel') values for dominant cover types, for each of 6 bands
   // *endmember values listed here = avg. endmember values from research in Yellowstone by M. Halabisky; needs fine tuning)
-
-  //-------------------------------
-  // Luke, can we add an if/then statement here
-  // e.g., if endmember parameters set above, use those,
-  // else use default "dummy' endmembers from Yellowstone
-  // (see Meghan's code for similar example)
 
   // Constrained to one (no negative values)
   var unmixed = s_image.unmix(
@@ -194,24 +193,27 @@ utils.smaUnmixL8 = function (image, endmembers) {
 
 utils.getEndmembers = function(stack, useCustomEndMembers) {
   if (useCustomEndMembers) {
-    var out = utils.endmembers.cstm[stack];
+    endmembers = utils.endmembers.cstm[stack];
   } else {
-    out = utils.endmembers.dflt[stack];
+    endmembers = utils.endmembers.dflt[stack];
   }
-  return out
+  return endmembers;
 };
-// print(utils.endmembers.dflt)
-// print(endmembers.cstm)
 
-utils.smaUnmix = function(fun, useCustom) {
-  if (useCustom) {
-    var myfun = function(image) {
-      return fun(image, utils.endmembers.cstm.L5)
+utils.smaUnmix = function(fun, useCustomEndMembers) {
+  return (
+    function(image) {
+      return fun(image, utils.getEndmembers(stack, useCustomEndMembers));
     }
-  } else {
-    myfun = fun
-  }
-  return myfun
+  );
+  // if (useCustomEndMembers) {
+  //   myfun = function(image) {
+  //     return fun(image, utils.endmembers.cstm.L5);
+  //   };
+  // } else {
+  //   myfun = fun;
+  // }
+  // return myfun
 };
 
 // Functions to add Normalized Difference Indices:
