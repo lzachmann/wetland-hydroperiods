@@ -1,7 +1,7 @@
 # wetland-hydroperiods
-A fork of a Google Earth Engine project, accessible by those with read/write permissions [here](
+A fork of a Google Earth Engine project. The upstream repository is accessible by those with read/write permissions [here](
 https://code.earthengine.google.com/?accept_repo=users/laura_csp/wetland_hydroperiods). The code in this repository was developed by Conservation Science Partners
-in collaboration with the National Park Service, Northern Colorado Plateau Network (NCPN).
+in collaboration with the National Park Service, Northern Colorado Plateau Network (NCPN). The code uses the Google Earth Engine JavaScript API, but could easily be ported to Python if using the [Python API](https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api-guiattard).
 
 ## Recommended citation(s)
 Halabisky, M., L. M. Moskal, A. Gillespie, M. Hannam. 2016. Reconstructing semi-arid wetland surface water dynamics through spectral mixture analysis of a time series of Landsat satellite images (1984-2011). _Remote Sensing of Environment_ 177:171-183.
