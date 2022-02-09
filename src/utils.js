@@ -85,11 +85,9 @@ utils.createTimeBand_indices = function (image) {
   return image.addBands(image.metadata("system:time_start").divide(1e18));
 };
 
-// Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
-utils.smaUnmixL5 = function (image, endmembers) {
-  if (endmembers === undefined) endmembers = utils.endmembers.dflt.L5;
-  // Select 6 spectral bands
-  var s_image = image.select(
+utils.getSpectralBands = function(image, stack) {
+  if (stack === "L5") {
+    s_image = image.select(
     "SR_B1",
     "SR_B2",
     "SR_B3",
@@ -97,6 +95,41 @@ utils.smaUnmixL5 = function (image, endmembers) {
     "SR_B5",
     "SR_B7"
   );
+  } else if (stack === "L8") {
+    s_image = image.select(
+    "SR_B2",
+    "SR_B3",
+    "SR_B4",
+    "SR_B5",
+    "SR_B6",
+    "SR_B7"
+  );
+  }
+  return s_image;
+};
+
+utils.getEndmembers = function(stack, useCustomEndMembers) {
+  if (useCustomEndMembers) {
+    endmembers = utils.endmembers.cstm[stack];
+  } else {
+    endmembers = utils.endmembers.dflt[stack];
+  }
+  return endmembers;
+};
+
+// Function to run full Spectral Mixture Analysis (SMA) for Landsat 5
+utils.smaUnmix = function (image, stack, endmembers) {
+  if (endmembers === undefined) endmembers = utils.endmembers.dflt[stack];
+  // Select 6 spectral bands
+  var s_image = utils.getSpectralBands(image, stack);
+  // var s_image = image.select(
+  //   "SR_B1",
+  //   "SR_B2",
+  //   "SR_B3",
+  //   "SR_B4",
+  //   "SR_B5",
+  //   "SR_B7"
+  // );
   // Add time band
   var date = image.get("system:time_start");
   // Get the pixel QA band
@@ -138,72 +171,63 @@ utils.smaUnmixL5 = function (image, endmembers) {
   return unmixedOutput;
 };
 
-// Function to run full SMA for Landsat 8
-utils.smaUnmixL8 = function (image, endmembers) {
-  if (endmembers === undefined) endmembers = utils.endmembers.dflt.L8;
-  // Select 6 spectral bands
-  var s_image = image.select(
-    "SR_B2",
-    "SR_B3",
-    "SR_B4",
-    "SR_B5",
-    "SR_B6",
-    "SR_B7"
-  );
-  // Add time band
-  var date = image.get("system:time_start");
-  // Get the pixel QA band
-  var QA = image.select(["QA_PIXEL"]);
-  // Grab endmember ('pure pixel') values for dominant cover types, for each of 6 bands
-  // *endmember values listed here = avg. endmember values from research in Yellowstone by M. Halabisky; needs fine tuning)
+// // Function to run full SMA for Landsat 8
+// utils.smaUnmixL8 = function (image, endmembers) {
+//   if (endmembers === undefined) endmembers = utils.endmembers.dflt.L8;
+//   // Select 6 spectral bands
+//   var s_image = image.select(
+//     "SR_B2",
+//     "SR_B3",
+//     "SR_B4",
+//     "SR_B5",
+//     "SR_B6",
+//     "SR_B7"
+//   );
+//   // Add time band
+//   var date = image.get("system:time_start");
+//   // Get the pixel QA band
+//   var QA = image.select(["QA_PIXEL"]);
+//   // Grab endmember ('pure pixel') values for dominant cover types, for each of 6 bands
+//   // *endmember values listed here = avg. endmember values from research in Yellowstone by M. Halabisky; needs fine tuning)
   
-  // Constrained to one (no negative values)
-  var unmixed = s_image.unmix(
-    endmembers,
-    true,
-    true
-  );
-  // Add RMSE
-  // var endmembers = ee.List([
-  //   waterValuesL8,
-  //   grassValuesL8,
-  //   treeValuesL8,
-  //   vegValuesL8,
-  // ]);
-  var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
-  var unmixArray = unmixed.toArray().toArray(1);
-  var origArray = s_image.toArray().toArray(1);
-  // Compute modeled value
-  var model = endArray.matrixMultiply(unmixArray);
-  var mse = model
-    .subtract(origArray)
-    .pow(2)
-    .arrayReduce(ee.Reducer.sum(), [0, 1])
-    .arrayGet([0, 0]);
-  // Convert to area
-  var unmixedArea = unmixed.multiply(900); // Option: multiply by 900 for approx area of each 30x30m pixel
-  // Setting a custom time metadata key.
-  var unmixedOutput = unmixedArea
-    .addBands(mse.sqrt())
-    .addBands(QA)
-    .set("date", date)
-    .rename("water", "grass", "tree", "veg", "rmse", "QA_PIXEL");
-  return unmixedOutput;
-};
+//   // Constrained to one (no negative values)
+//   var unmixed = s_image.unmix(
+//     endmembers,
+//     true,
+//     true
+//   );
+//   // Add RMSE
+//   // var endmembers = ee.List([
+//   //   waterValuesL8,
+//   //   grassValuesL8,
+//   //   treeValuesL8,
+//   //   vegValuesL8,
+//   // ]);
+//   var endArray = ee.Image.constant(ee.Array(endmembers).transpose(0, 1));
+//   var unmixArray = unmixed.toArray().toArray(1);
+//   var origArray = s_image.toArray().toArray(1);
+//   // Compute modeled value
+//   var model = endArray.matrixMultiply(unmixArray);
+//   var mse = model
+//     .subtract(origArray)
+//     .pow(2)
+//     .arrayReduce(ee.Reducer.sum(), [0, 1])
+//     .arrayGet([0, 0]);
+//   // Convert to area
+//   var unmixedArea = unmixed.multiply(900); // Option: multiply by 900 for approx area of each 30x30m pixel
+//   // Setting a custom time metadata key.
+//   var unmixedOutput = unmixedArea
+//     .addBands(mse.sqrt())
+//     .addBands(QA)
+//     .set("date", date)
+//     .rename("water", "grass", "tree", "veg", "rmse", "QA_PIXEL");
+//   return unmixedOutput;
+// };
 
-utils.getEndmembers = function(stack, useCustomEndMembers) {
-  if (useCustomEndMembers) {
-    endmembers = utils.endmembers.cstm[stack];
-  } else {
-    endmembers = utils.endmembers.dflt[stack];
-  }
-  return endmembers;
-};
-
-utils.smaUnmix = function(fun, useCustomEndMembers) {
+utils.smaUnmixFun = function(useCustomEndMembers) {
   return (
     function(image) {
-      return fun(image, utils.getEndmembers(stack, useCustomEndMembers));
+      return utils.smaUnmix(image, stack, utils.getEndmembers(stack, useCustomEndMembers));
     }
   );
   // if (useCustomEndMembers) {
