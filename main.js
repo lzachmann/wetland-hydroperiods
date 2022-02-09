@@ -98,10 +98,14 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 // Run SMA over image collection - time series
 // ----------------------------------------------
 
-var smaAllL5 = imageL5.map(utils.smaUnmixFun("L5", useCustomEndMembers)).map(utils.cloudMask);
+var smaAllL5 = imageL5
+  .map(utils.smaUnmixFun("L5", useCustomEndMembers))
+  .map(utils.cloudMask);
 // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // Run SMA function on L8 stack
-var smaAllL8 = imageL8.map(utils.smaUnmixFun("L8", useCustomEndMembers)).map(utils.cloudMask);
+var smaAllL8 = imageL8
+  .map(utils.smaUnmixFun("L8", useCustomEndMembers))
+  .map(utils.cloudMask);
 // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // Merge SMA datasets.
 var smaAll = ee.ImageCollection(smaAllL5.merge(smaAllL8));
@@ -179,13 +183,26 @@ var eddiSeries = utils.viz.chart.gmet(gridmet, AOI, climVar2);
 print(eddiSeries, climVar2);
 
 // Load and filter monthly TerraClimate data
-var monthlyClim = ee.ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
+var monthlyClim = ee
+  .ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
   .filter(ee.Filter.date(startDate, endDate));
-  
-var sweSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar3, startDate, endDate);
+
+var sweSeries = utils.viz.chart.tclim(
+  monthlyClim,
+  AOI,
+  climVar3,
+  startDate,
+  endDate
+);
 print(sweSeries, climVar3);
 
-var prSeries = utils.viz.chart.tclim(monthlyClim, AOI, climVar4, startDate, endDate);
+var prSeries = utils.viz.chart.tclim(
+  monthlyClim,
+  AOI,
+  climVar4,
+  startDate,
+  endDate
+);
 print(prSeries, climVar4);
 
 // -----------------------------------------------------------------
