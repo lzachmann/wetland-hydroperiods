@@ -1,4 +1,6 @@
-// defaults: landsat 5
+var endmembers = {};
+
+// ---- defaults: landsat 5 ----
 
 var waterValuesL5 = [
     8043.208015554676, 8080.756670825777, 7789.540509624151, 7786.326487501702,
@@ -18,7 +20,8 @@ var waterValuesL5 = [
     16684.446507257042, 13830.471471619629,
   ];
   
-  // defaults: landsat 8
+// ---- defaults: landsat 8 ----
+
   var waterValuesL8 = [
     8043.208015554676, 8080.756670825777, 7789.540509624151, 7786.326487501702,
     7509.152834991363, 7483.721189208322,
@@ -37,11 +40,10 @@ var waterValuesL5 = [
     16684.446507257042, 13830.471471619629,
   ];
   
-  var dflt = {
-    "L5": [waterValuesL5, grassValuesL5, treeValuesL5, vegValuesL5],
-    "L8": [waterValuesL8, grassValuesL8, treeValuesL8, vegValuesL8]
-  };
+  endmembers.dflt = {};
+  endmembers.dflt.L5 = [waterValuesL5, grassValuesL5, treeValuesL5, vegValuesL5];
+  endmembers.dflt.L8 = [waterValuesL8, grassValuesL8, treeValuesL8, vegValuesL8];
   // print(ee.Array(ee.List(dflt.L5)))
   
-  exports = dflt;
+  exports = endmembers;
   
