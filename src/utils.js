@@ -16,7 +16,10 @@ utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers
 
 // Custom endmembers
 var other_endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
-utils.endmembers = ee.Dictionary(utils.endmembers).combine(other_endmembers);
+// print(other_endmembers.cstm['L8'])
+// utils.endmembers = ee.Dictionary(utils.endmembers).combine(other_endmembers);
+// print(utils.endmembers)
+// utils.endmembers.cstm
 
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
@@ -110,7 +113,7 @@ utils.getSpectralBands = function(image, stack) {
 
 utils.getEndmembers = function(stack, useCustomEndMembers) {
   if (useCustomEndMembers) {
-    endmembers = utils.endmembers.cstm[stack];
+    endmembers = other_endmembers.cstm[stack]; // was: utils.endmembers.cstm
   } else {
     endmembers = utils.endmembers.dflt[stack];
   }
