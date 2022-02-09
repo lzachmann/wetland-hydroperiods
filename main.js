@@ -206,6 +206,7 @@ print(prSeries, climVar4);
 // -----------------------------------------------------------------
 
 //  SMA
+// print(smaAll)
 var smaSum = smaAll
     .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
     .map(function (i) {
