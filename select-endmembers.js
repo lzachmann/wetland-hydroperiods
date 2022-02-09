@@ -51,6 +51,7 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
 // Author: M. Halabisky 
 // Purpose: Select endmembers for use in spectral mixture analysis
 
+var endmembers = {};
 
 // Set parameters
 var Cloud_cover = 20; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
@@ -208,3 +209,8 @@ var spectraChartL8 = ui.Chart.image.regions(
         .setOptions(options);
 print(spectraChartL8, 'L8 spectral em chart'); // Display the L8 chart.
 
+endmembers.cstm = {};
+endmembers.cstm.L5 = spectralsigs_L5;
+endmembers.cstm.L8 = spectralsigs_L8;
+
+exports = endmembers;
