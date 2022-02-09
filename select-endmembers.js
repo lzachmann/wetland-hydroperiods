@@ -123,7 +123,8 @@ geometry:veg_em, scale: 30, maxPixels: 1e8});
 var vegvaluesmeanL5 = vegL5.values();
 //print (vegvaluesmeanL5, "L5 vegvalues");
 // combined
-var spectralsigs_L5 = ee.Array([watervaluesmeanL5, vegvaluesmeanL5, treevaluesmeanL5, grassvaluesmeanL5, mudvaluesmeanL5])
+// var spectralsigs_L5 = ee.Array([watervaluesmeanL5, vegvaluesmeanL5, treevaluesmeanL5, grassvaluesmeanL5, mudvaluesmeanL5])
+var spectralsigs_L5 = ee.Array([watervaluesmeanL5, grassvaluesmeanL5, treevaluesmeanL5, vegvaluesmeanL5])
 print(spectralsigs_L5, "spectralsigs_L5")
 
 // Endmembers for Landsat 8
@@ -155,7 +156,8 @@ geometry:veg_em, scale: 30, maxPixels: 1e8});
 var vegvaluesmeanL8 = vegL8.values();
 //print (vegvaluesmeanL8, "L8 vegvalues");
 // combined
-var spectralsigs_L8 = ee.Array([watervaluesmeanL8, vegvaluesmeanL8, treevaluesmeanL8, grassvaluesmeanL8, mudvaluesmeanL8])
+// var spectralsigs_L8 = ee.Array([watervaluesmeanL8, vegvaluesmeanL8, treevaluesmeanL8, grassvaluesmeanL8, mudvaluesmeanL8])
+var spectralsigs_L8 = ee.Array([watervaluesmeanL8, grassvaluesmeanL8, treevaluesmeanL8, vegvaluesmeanL8])
 print(spectralsigs_L8, "spectralsigs_L8")
 
 // Make a BarChart from the table and options. //
@@ -163,10 +165,10 @@ print(spectralsigs_L8, "spectralsigs_L8")
 // Plotting endmember from selected polygons
 var em = ee.FeatureCollection([
   ee.Feature(water_em, {'label': 'water'}),
-  ee.Feature(veg_em, {'label': 'veg'}),
-  ee.Feature(tree_em, {'label': 'tree'}),
-  ee.Feature(grassland_em, {'label': 'grass'}),
-  ee.Feature(mud_em, {'label': 'mud'})
+   ee.Feature(grassland_em, {'label': 'grass'}),
+   ee.Feature(tree_em, {'label': 'tree'}),
+   // ee.Feature(mud_em, {'label': 'mud'}),
+  ee.Feature(veg_em, {'label': 'veg'})
 ]);
 // Map.addLayer(em, {}, 'endmembers');
 
@@ -179,10 +181,10 @@ var options = {
   pointSize: 4,
   series: {
     0: {color: '0000FF' }, // water
-    1: {color: '00FF00'}, // veg
+    1: {color: '00FFF0'}, // grass
     2: {color: 'FF0000'}, // tree
-    3: {color: '00FFF0'}, // grass
-    4: {color: 'A66221'} // mud
+    // ?: {color: 'A66221'}, // mud
+    3: {color: '00FF00'}, // veg
 }};
 
 // Define a list of Landsat wavelengths for X-axis labels.
