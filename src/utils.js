@@ -224,20 +224,12 @@ utils.smaUnmix = function (image, stack, endmembers) {
 //   return unmixedOutput;
 // };
 
-utils.smaUnmixFun = function(useCustomEndMembers) {
+utils.smaUnmixFun = function(stack, useCustomEndMembers) {
   return (
     function(image) {
       return utils.smaUnmix(image, stack, utils.getEndmembers(stack, useCustomEndMembers));
     }
   );
-  // if (useCustomEndMembers) {
-  //   myfun = function(image) {
-  //     return fun(image, utils.endmembers.cstm.L5);
-  //   };
-  // } else {
-  //   myfun = fun;
-  // }
-  // return myfun
 };
 
 // Functions to add Normalized Difference Indices:
