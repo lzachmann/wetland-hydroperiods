@@ -99,12 +99,23 @@ Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 // ----------------------------------------------
 
 // Run SMA function on L5 stack
-if (useCustomEndMembers) {
-  var myfun = function() {
-    return utils.smaUnmixL5(image, utils.endmembers.cstm.L5)
+// if (useCustomEndMembers) {
+//   var myfun = function(image) {
+//     return utils.smaUnmixL5(image, utils.endmembers.cstm.L5)
+//   }
+// } else {utils.smaUnmixL5}
+var get_sma_unmix = function(fun, useCustom) {
+  if (useCustom) {
+    var myfun = function(image) {
+      return fun(image, utils.endmembers.cstm.L5)
+    }
+  } else {
+    myfun = fun
   }
-} else {utils.smaUnmixL5}
-var smaAllL5 = imageL5.map(myfun).map(utils.cloudMask);
+  return myfun
+};
+var this_fun = get_sma_unmix(utils.smaUnmixL5, useCustomEndMembers)
+var smaAllL5 = imageL5.map(this_fun).map(utils.cloudMask);
 print(smaAllL5)
 // // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
 // // Run SMA function on L8 stack
