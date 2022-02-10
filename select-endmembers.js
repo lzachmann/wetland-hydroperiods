@@ -56,169 +56,156 @@ var endmembers = {};
 
 // Set parameters
 var Cloud_cover = 20; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
-var start_date = "1984-01-01";
-var end_date = "2021-12-31";
-var start_doy = 121; // Julian day of year (From Andy May 1 = 121, except big snow years) I selected May 15th because some days looked snowy. 136
-var end_doy = 288; // (From Andy Oct. 15 = DOY 288)
+var startDate = ee.Date("1984-01-01");
+var endDate = ee.Date("2021-12-31");
+var startDOY = 136; // Start day of year (ex. May 15 = DOY 136)
+var endDOY = 288; // End day of year (ex. Oct. 15 = DOY 288)
 
 // For endmember extraction used the days where ponds were dry-
 // only August months w/ 20% or less cloud cover. 213 - 243
+
 // Image collections L5 and L8
-var em_L8 = ee
-  .ImageCollection("LANDSAT/LC08/C01/T1_SR")
-  .filterDate(start_date, end_date)
+var emL5 = ee
+  .ImageCollection("LANDSAT/LT05/C02/T1_L2")
+  .filterDate(startDate, endDate)
   .filterMetadata("CLOUD_COVER", "less_than", Cloud_cover)
   //.filterBounds(geometry) // Use AOI or geometry from above
-  .filter(ee.Filter.calendarRange(start_doy, end_doy, "day_of_year")); // select days of the year for analysis
+  .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // select days of the year for analysis
 
-var em_L5 = ee
-  .ImageCollection("LANDSAT/LT05/C01/T1_SR")
-  .filterDate(start_date, end_date)
+var emL8 = ee
+  .ImageCollection("LANDSAT/LC08/C02/T1_L2")
+  .filterDate(startDate, endDate)
   .filterMetadata("CLOUD_COVER", "less_than", Cloud_cover)
   //.filterBounds(geometry) // Use AOI or geometry from above
-  .filter(ee.Filter.calendarRange(start_doy, end_doy, "day_of_year")); // select days of the year for analysis
+  .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // select days of the year for analysis
 
-// Load image collections Landsat 5 (L5) and Landsat 8 (L8)
-// var imageL5 = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
-//         // Replaced deprecated Collection 1 'LANDSAT/LT05/C01/T1_SR'
-//         .filterDate(startDate, endDate)
-//         .filterMetadata('CLOUD_COVER', 'less_than', cloudCover) // Optional % cloud filter to reduce noise
-//         .filterBounds(geometry) // Use AOI or geometry from above
-//         .filter(ee.Filter.calendarRange(startDOY, endDOY, 'day_of_year')); // Select days of the year for analysis
-// var imageL8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
-//         // Replaced deprecated Collection 1 'LANDSAT/LC08/C01/T1_SR'
-//         .filterDate(startDate, endDate)
-//         .filterMetadata('CLOUD_COVER', 'less_than', cloudCover) // Optional % cloud filter to reduce noise
-//         .filterBounds(geometry) // Use AOI or geometry from above
-//         .filter(ee.Filter.calendarRange(startDOY, endDOY, 'day_of_year')); // Select days of the year for analysis
-
-//print (em_L5, "L5 endmember image collection");
-//print (em_L8, "L8 endmember image collection");
+//print (emL5, "L5 endmember image collection");
+//print (emL8, "L8 endmember image collection");
 
 // A general model uses mean estimates from a range of dates. A refined model uses spectral estimates from each image scene.
-// Endmember polygons can be derived from multiple locations or a single knwoen location.
+// Endmember polygons can be derived from multiple locations or a single known location.
 
 // Endmembers for Landsat 5
-var em_L5_noclouds = em_L5
+var emL5_noClouds = emL5
   .filterMetadata("CLOUD_COVER", "less_than", 10)
-  .select("B1", "B2", "B3", "B4", "B5", "B7")
+  .select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7")
   .mean();
-// print(em_L5_noclouds, "endmember_L5_noclouds");
+// print(emL5_noClouds, "endmember_L5_noClouds");
 // water
-var waterL5 = em_L5_noclouds.reduceRegion({
+var waterL5 = emL5_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: water_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var watervaluesmeanL5 = waterL5.values();
-//print (watervaluesmeanL5, 'L5 watervalues');
+var waterValuesMeanL5 = waterL5.values();
+//print (waterValuesMeanL5, 'L5 waterValues');
 // grass
-var grassL5 = em_L5_noclouds.reduceRegion({
+var grassL5 = emL5_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: grassland_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var grassvaluesmeanL5 = grassL5.values();
-//print (grassvaluesmeanL5, "L5 grassvalues");
+var grassValuesMeanL5 = grassL5.values();
+//print (grassValuesMeanL5, "L5 grassValues");
 // tree
-var treeL5 = em_L5_noclouds.reduceRegion({
+var treeL5 = emL5_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: tree_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var treevaluesmeanL5 = treeL5.values();
-//print (treevaluesmeanL5, "L5 treevalues");
+var treeValuesMeanL5 = treeL5.values();
+//print (treeValuesMeanL5, "L5 treeValues");
 // mud
-var mudL5 = em_L5_noclouds.reduceRegion({
+var mudL5 = emL5_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: mud_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var mudvaluesmeanL5 = mudL5.values();
-//print (mudvaluesmeanL5, "L5 mudvalues");
+var mudValuesMeanL5 = mudL5.values();
+//print (mudValuesMeanL5, "L5 mudValues");
 // veg
-var vegL5 = em_L5_noclouds.reduceRegion({
+var vegL5 = emL5_noClouds.reduceRegion({
   reducer: ee.Reducer.intervalMean(50, 95),
   geometry: veg_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var vegvaluesmeanL5 = vegL5.values();
-//print (vegvaluesmeanL5, "L5 vegvalues");
+var vegValuesMeanL5 = vegL5.values();
+//print (vegValuesMeanL5, "L5 vegValues");
 // combined
-// var spectralsigs_L5 = ee.Array([watervaluesmeanL5, vegvaluesmeanL5, treevaluesmeanL5, grassvaluesmeanL5, mudvaluesmeanL5])
+// var spectralSigs_L5 = ee.Array([waterValuesMeanL5, vegValuesMeanL5, treeValuesMeanL5, grassValuesMeanL5, mudValuesMeanL5])
 var spectralsigs_L5 = ee.Array([
-  watervaluesmeanL5,
-  grassvaluesmeanL5,
-  treevaluesmeanL5,
-  vegvaluesmeanL5,
+  waterValuesMeanL5,
+  grassValuesMeanL5,
+  treeValuesMeanL5,
+  vegValuesMeanL5,
 ]);
 if (verbose) print(spectralsigs_L5, "spectralsigs_L5");
 
 // Endmembers for Landsat 8
-var em_L8_noclouds = em_L8
+var emL8_noClouds = emL8
   .filterMetadata("CLOUD_COVER", "less_than", 10)
-  .select("B2", "B3", "B4", "B5", "B6", "B7")
+  .select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7")
   .median();
-//print(em_L8_noclouds,'endmember_L8_noclouds');
+//print(emL8_noClouds,'endmember_L8_noClouds');
 // water
-var waterL8 = em_L8_noclouds.reduceRegion({
+var waterL8 = emL8_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: water_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var watervaluesmeanL8 = waterL8.values();
-//print (watervaluesmeanL8, 'L8 watervalues');
+var waterValuesMeanL8 = waterL8.values();
+//print (waterValuesMeanL8, 'L8 waterValues');
 // grass
-var grassL8 = em_L8_noclouds.reduceRegion({
+var grassL8 = emL8_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: grassland_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var grassvaluesmeanL8 = grassL8.values();
-//print (grassvaluesmeanL8, 'L8 grassvalues');
+var grassValuesMeanL8 = grassL8.values();
+//print (grassValuesMeanL8, 'L8 grassValues');
 // tree
-var treeL8 = em_L8_noclouds.reduceRegion({
+var treeL8 = emL8_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: tree_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var treevaluesmeanL8 = treeL8.values();
-//print (treevaluesmeanL8, 'L8 treevalues');
+var treeValuesMeanL8 = treeL8.values();
+//print (treeValuesMeanL8, 'L8 treeValues');
 // mud
-var mudL8 = em_L8_noclouds.reduceRegion({
+var mudL8 = emL8_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: mud_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var mudvaluesmeanL8 = mudL8.values();
-//print (mudvaluesmeanL8, "L8 mudvalues");
+var mudValuesMeanL8 = mudL8.values();
+//print (mudValuesMeanL8, "L8 mudValues");
 // veg
-var vegL8 = em_L8_noclouds.reduceRegion({
+var vegL8 = emL8_noClouds.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: veg_em,
   scale: 30,
   maxPixels: 1e8,
 });
-var vegvaluesmeanL8 = vegL8.values();
-//print (vegvaluesmeanL8, "L8 vegvalues");
+var vegValuesMeanL8 = vegL8.values();
+//print (vegValuesMeanL8, "L8 vegValues");
 // combined
-// var spectralsigs_L8 = ee.Array([watervaluesmeanL8, vegvaluesmeanL8, treevaluesmeanL8, grassvaluesmeanL8, mudvaluesmeanL8])
-var spectralsigs_L8 = ee.Array([
-  watervaluesmeanL8,
-  grassvaluesmeanL8,
-  treevaluesmeanL8,
+// var spectralSigsL8 = ee.Array([waterValuesMeanL8, vegValuesMeanL8, treeValuesMeanL8, grassValuesMeanL8, mudValuesMeanL8])
+var spectralsigsL8 = ee.Array([
+  waterValuesMeanL8,
+  grassValuesMeanL8,
+  treeValuesMeanL8,
   vegvaluesmeanL8,
 ]);
-if (verbose) print(spectralsigs_L8, "spectralsigs_L8");
+if (verbose) print(spectralsigsL8, "spectralSigs_L8");
 
 // Make a BarChart from the table and options. //
 
@@ -227,7 +214,7 @@ var em = ee.FeatureCollection([
   ee.Feature(water_em, { label: "water" }),
   ee.Feature(grassland_em, { label: "grass" }),
   ee.Feature(tree_em, { label: "tree" }),
-  // ee.Feature(mud_em, {'label': 'mud'}),
+  ee.Feature(mud_em, {'label': 'mud'}),
   ee.Feature(veg_em, { label: "veg" }),
 ]);
 // Map.addLayer(em, {}, 'endmembers');
@@ -257,7 +244,7 @@ var spectraChartL5 = ui.Chart.image
     // scene2.select("B1","B2","B3","B4","B5","B7"),
     em_L5
       .filterMetadata("CLOUD_COVER", "less_than", 10)
-      .select("B1", "B2", "B3", "B4", "B5", "B7")
+      .select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7")
       .median(),
     em,
     ee.Reducer.mean(),
@@ -275,7 +262,7 @@ var spectraChartL8 = ui.Chart.image
     //sceneL8.select("B2","B3","B4","B5","B6","B7"),
     em_L8
       .filterMetadata("CLOUD_COVER", "less_than", 10)
-      .select("B2", "B3", "B4", "B5", "B6", "B7")
+      .select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7")
       .median(),
     em,
     ee.Reducer.mean(),
