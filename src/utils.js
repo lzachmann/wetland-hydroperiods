@@ -36,7 +36,7 @@ var cloud = function (image) {
   var QA = image.select(["QA_PIXEL"]);
   // Return an image masking med-high cloud pixels
   return getQAbits(QA, 8, 9, "cloud").lte(1);
-  // *lte (less than or equal to) low confidence (=1)
+  // keeps pixels less than or equal to (lte) low confidence (=1)
 };
 // Function to mask medium and high confidence CLOUD SHADOW
 var cloudShadow = function (image) {
