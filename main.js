@@ -89,8 +89,8 @@ var imageL8 = utils.load_and_filter(
 // // print (imageL5, 'L5 image collection'); // Useful for looking up individual dates or wonky values (often caused by cloud/cloud shadow not masked out)
 // print(imageL8, "L8 image collection");
 // // Map Landsat scene of interest
-var L8_scene = ee.Image(sceneID);
-Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
+// var L8_scene = ee.Image(sceneID);
+// Map.addLayer(L8_scene, utils.viz.params.L8, "Selected Landsat 8 scene");
 
 // ----------------------------------------------
 // Run SMA over image collection - time series
@@ -107,7 +107,7 @@ var smaAll = smaAll.sort("date");
 
 // Display SMA image - first date
 print(smaAll, "sma all");
-Map.addLayer(smaAll, utils.viz.params.sma, "water", false);
+Map.addLayer(smaAll, utils.viz.params.sma, "water", true);
 
 // -------------------------------------------------------------------------
 // Run Normalized Difference indices over image collection - time series
