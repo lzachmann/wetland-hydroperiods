@@ -26,6 +26,8 @@ var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
 // Inputs: L5/L8 Collection 2; Gridmet, TerraClimate
 // + endmember values, focal wetland polygons (maxExtents).
 
+// Copyright (C) 2022  Meghan Halabisky, Laura Farwell, and Luke Zachmann
+
 // -----------------------------------------------------------------
 // User-Defined Options
 // -----------------------------------------------------------------
