@@ -47,8 +47,7 @@ var geometry = maxExtents;
 // Map.addLayer(geometry, {}, 'wetlands');
 
 // Set parameters
-var cloudCover = 40;
-// Optional filter; removes any scenes with > 40% clouds -- reduces noise from cloud/cloud shadow artifacts
+var cloudCover = 40; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
 var startDate = ee.Date("1984-01-01");
 var endDate = ee.Date("2021-12-31");
 var startDOY = 136; // Start day of year (ex. May 15 = DOY 136)
