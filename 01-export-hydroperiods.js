@@ -1,5 +1,8 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var focalArea1 = /* color: #d63000 */ee.Geometry.Polygon(
+var focalArea1 = 
+    /* color: #d63000 */
+    /* shown: false */
+    ee.Geometry.Polygon(
         [[[-112.86259520906428, 37.585532802895735],
           [-112.80629027742366, 37.58444453915495],
           [-112.80697692293147, 37.63122551158921],
