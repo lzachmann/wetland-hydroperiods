@@ -11,7 +11,7 @@ utils.viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 // Default endmembers
 utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
 // Custom endmembers
-var other_endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
+var other_endmembers = require("users/laura_csp/wetland_hydroperiods:00-select-endmembers.js");
 
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
