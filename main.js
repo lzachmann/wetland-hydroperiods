@@ -21,7 +21,7 @@ var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
 
 // /*
 // Author(s): Meghan Halabisky (mhalabisky@gmail.com)
-// Countributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
+// Contributor(s): Laura Farwell (laura@csp-inc.org) and Luke Zachmann (luke@csp-inc.org)
 // Maintainer(s): Luke Zachmann
 
 // Purpose: Wetland hydrograph reconstruction using spectral mixture analysis (SMA)
@@ -45,7 +45,6 @@ var AOI = focalArea2; // AOI = area of interest
 // Option 2: Load a shapefile of wetland polygon(s) -- can use 'maxExtents' above or load your own
 var geometry = maxExtents;
 // Map.addLayer(geometry, {}, 'wetlands');
-// Map.centerObject(geometry, 10);
 
 // Set parameters
 var cloudCover = 40;
@@ -233,17 +232,6 @@ var indicesTimeSeries = indicesMean.flatten().select([".*"], null, false);
 // Export csv file
 Export.table.toDrive(indicesTimeSeries, "Normalized_indices_timeSeries");
 
-// Pixel count
-var pixelQA = smaAll.select("QA_PIXEL");
-// Count pixels per wetland polygon
-var pixelCount = pixelQA.map(function (i) {
-  return i.reduceRegions(geometry, ee.Reducer.count());
-});
-// Flatten collection and remove geometry for export
-var pixelCountTimeSeries = pixelCount.flatten().select([".*"], null, false);
-// Export csv file
-Export.table.toDrive(pixelCountTimeSeries, "Pixel_count_timeSeries");
-
 // --------------------------------------
 // GRIDMET & TERRACLIMATE DATA EXPORTS
 
@@ -323,7 +311,7 @@ Export.table.toDrive(sweTimeSeries, "SWE_timeSeries");
 var prTimeSeries = TerraClimate.map(function (image) {
   // Calculate mean PR per wetland polygon
   return image
-    .select("pr")
+    .select('pr')
     .reduceRegions({
       collection: geometry.select("pond_ID"),
       reducer: ee.Reducer.mean(),
@@ -339,6 +327,7 @@ var prTimeSeries = TerraClimate.map(function (image) {
   .select([".*"], null, false);
 Export.table.toDrive(prTimeSeries, "PR_timeSeries");
 
+// Export table of focal polygon data
 Export.table.toDrive(maxExtents, 'maxExtents_export');
 
 //*/
