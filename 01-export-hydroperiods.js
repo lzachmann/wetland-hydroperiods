@@ -206,7 +206,7 @@ print(prSeries, climVar4);
 // qaImage consists of either -1 or 1 for every pixel
 // min(qaImage) * the sum  
 var smaSum = smaAll
-    .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
+    // .map(utils.cloudUnmask) // should unmask NA values & replace w -9999 (for export)
     .map(function (i) {
   // Sum SMA areas (or proportions) by wetland polygon
   return i.reduceRegions(geometry, ee.Reducer.sum());
@@ -215,6 +215,17 @@ var smaSum = smaAll
 var smaTimeSeries = smaSum.flatten().select([".*"], null, false);
 // Export csv file of data summary to user Google Drive account
 Export.table.toDrive(smaTimeSeries, "SMA_timeSeries");
+
+var smaNaSum = smaAll
+    .map(utils.maskedNA_filter) 
+    .map(function (i) {
+  // Sum SMA areas (or proportions) by wetland polygon
+  return i.reduceRegions(geometry, ee.Reducer.sum());
+});
+// Flatten collection and remove geometry for export
+var smaNaTimeSeries = smaNaSum.flatten().select([".*"], null, false);
+// Export csv file of data summary to user Google Drive account
+Export.table.toDrive(smaNaTimeSeries, "SMA_NA_timeSeries");
 
 // NDVI, NDWI
 var indicesMean = indicesAll
