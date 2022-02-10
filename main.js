@@ -1,13 +1,5 @@
 /**** Start of imports. If edited, may not auto-convert in the playground. ****/
-var focalArea2 = /* color: #98ff00 */ee.Geometry.Polygon(
-        [[[-107.70068276601195, 38.5391466504243],
-          [-107.7004038162744, 38.53300351043957],
-          [-107.69152034001708, 38.533272073972434],
-          [-107.69224990086913, 38.53938162350384]]]),
-    focalArea1 = 
-    /* color: #d63000 */
-    /* shown: false */
-    ee.Geometry.Polygon(
+var focalArea1 = /* color: #d63000 */ee.Geometry.Polygon(
         [[[-112.86259520906428, 37.585532802895735],
           [-112.80629027742366, 37.58444453915495],
           [-112.80697692293147, 37.63122551158921],
@@ -38,16 +30,16 @@ var utils = require("users/laura_csp/wetland_hydroperiods:src/utils.js");
 // Delineate study area:
 
 // Option 1: Draw a polygon of interest using GEE draw tool
-var AOI = focalArea2; // AOI = area of interest
+var AOI = focalArea1; // AOI = area of interest
 // Map.addLayer(AOI, {}, 'wetlands');
-// Map.centerObject(AOI, 18);
+Map.centerObject(AOI, 16);
 
 // Option 2: Load a shapefile of wetland polygon(s) -- can use 'maxExtents' above or load your own
 var geometry = maxExtents;
 // Map.addLayer(geometry, {}, 'wetlands');
 
 // Set parameters
-var cloudCover = 40; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
+var cloudCover = 30; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
 var startDate = ee.Date("1984-01-01");
 var endDate = ee.Date("2021-12-31");
 var startDOY = 136; // Start day of year (ex. May 15 = DOY 136)
