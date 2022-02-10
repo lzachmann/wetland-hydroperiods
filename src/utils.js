@@ -77,8 +77,8 @@ utils.cloudUnmask = function (image) {
 
 utils.maskedNA_filter = function (image) {
   // anything that is not NA is 0, anything that is NA is -1
-  // returns 1 if a pixel is 'good', 0 otherwise
-  return image.unmask(-1).gte(0); //image.unmask(-1).lt(0);
+  // returns 0 if a pixel is 'good', 1 otherwise
+  return image.unmask(-1).lt(0);
 };
 
 // Function to add a time band to the image (for mapping time series)
