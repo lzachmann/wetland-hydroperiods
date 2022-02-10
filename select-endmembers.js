@@ -142,6 +142,7 @@ var spectralSigsL5 = ee.Array([
   waterValuesMeanL5,
   grassValuesMeanL5,
   treeValuesMeanL5,
+  mudValuesMeanL5,
   vegValuesMeanL5,
 ]);
 if (verbose) print(spectralSigsL5, "spectralSigs_L5");
@@ -203,6 +204,7 @@ var spectralSigsL8 = ee.Array([
   waterValuesMeanL8,
   grassValuesMeanL8,
   treeValuesMeanL8,
+  mudValuesMeanL8,
   vegValuesMeanL8,
 ]);
 if (verbose) print(spectralSigsL8, "spectralSigs_L8");
