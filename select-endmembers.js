@@ -51,11 +51,11 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
 // Author: M. Halabisky
 // Purpose: Select endmembers for use in spectral mixture analysis
 
-var verbose = false;
+var verbose = true;
 var endmembers = {};
 
 // Set parameters
-var Cloud_cover = 20; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
+var cloudCover = 20; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
 var startDate = ee.Date("1984-01-01");
 var endDate = ee.Date("2021-12-31");
 var startDOY = 136; // Start day of year (ex. May 15 = DOY 136)
@@ -68,14 +68,14 @@ var endDOY = 288; // End day of year (ex. Oct. 15 = DOY 288)
 var emL5 = ee
   .ImageCollection("LANDSAT/LT05/C02/T1_L2")
   .filterDate(startDate, endDate)
-  .filterMetadata("CLOUD_COVER", "less_than", Cloud_cover)
+  .filterMetadata("CLOUD_COVER", "less_than", cloudCover)
   //.filterBounds(geometry) // Use AOI or geometry from above
   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // select days of the year for analysis
 
 var emL8 = ee
   .ImageCollection("LANDSAT/LC08/C02/T1_L2")
   .filterDate(startDate, endDate)
-  .filterMetadata("CLOUD_COVER", "less_than", Cloud_cover)
+  .filterMetadata("CLOUD_COVER", "less_than", cloudCover)
   //.filterBounds(geometry) // Use AOI or geometry from above
   .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // select days of the year for analysis
 
@@ -138,13 +138,13 @@ var vegValuesMeanL5 = vegL5.values();
 //print (vegValuesMeanL5, "L5 vegValues");
 // combined
 // var spectralSigs_L5 = ee.Array([waterValuesMeanL5, vegValuesMeanL5, treeValuesMeanL5, grassValuesMeanL5, mudValuesMeanL5])
-var spectralsigs_L5 = ee.Array([
+var spectralSigsL5 = ee.Array([
   waterValuesMeanL5,
   grassValuesMeanL5,
   treeValuesMeanL5,
   vegValuesMeanL5,
 ]);
-if (verbose) print(spectralsigs_L5, "spectralsigs_L5");
+if (verbose) print(spectralSigsL5, "spectralSigs_L5");
 
 // Endmembers for Landsat 8
 var emL8_noClouds = emL8
@@ -199,13 +199,13 @@ var vegValuesMeanL8 = vegL8.values();
 //print (vegValuesMeanL8, "L8 vegValues");
 // combined
 // var spectralSigsL8 = ee.Array([waterValuesMeanL8, vegValuesMeanL8, treeValuesMeanL8, grassValuesMeanL8, mudValuesMeanL8])
-var spectralsigsL8 = ee.Array([
+var spectralSigsL8 = ee.Array([
   waterValuesMeanL8,
   grassValuesMeanL8,
   treeValuesMeanL8,
-  vegvaluesmeanL8,
+  vegValuesMeanL8,
 ]);
-if (verbose) print(spectralsigsL8, "spectralSigs_L8");
+if (verbose) print(spectralSigsL8, "spectralSigs_L8");
 
 // Make a BarChart from the table and options. //
 
@@ -230,8 +230,8 @@ var options = {
     0: { color: "0000FF" }, // water
     1: { color: "00FFF0" }, // grass
     2: { color: "FF0000" }, // tree
-    // ?: {color: 'A66221'}, // mud
-    3: { color: "00FF00" }, // veg
+    3: {color: 'A66221'}, // mud
+    4: { color: "00FF00" }, // veg
   },
 };
 
@@ -241,8 +241,8 @@ var wavelengths = [1, 2, 3, 4, 5, 6];
 // Create the L5 chart and set options.
 var spectraChartL5 = ui.Chart.image
   .regions(
-    // scene2.select("B1","B2","B3","B4","B5","B7"),
-    em_L5
+    // scene2.select("SR_B1","SR_B2","SR_B3","SR_B4","SR_B5","SR_B7"),
+    emL5
       .filterMetadata("CLOUD_COVER", "less_than", 10)
       .select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7")
       .median(),
@@ -259,8 +259,8 @@ if (verbose) print(spectraChartL5, "L5 spectral em chart"); // Display the L5 ch
 // Create the L8 chart and set options.
 var spectraChartL8 = ui.Chart.image
   .regions(
-    //sceneL8.select("B2","B3","B4","B5","B6","B7"),
-    em_L8
+    //sceneL8.select("SR_B2","SR_B3","SR_B4","SR_B5","SR_B6","SR_B7"),
+    emL8
       .filterMetadata("CLOUD_COVER", "less_than", 10)
       .select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7")
       .median(),
@@ -275,7 +275,7 @@ var spectraChartL8 = ui.Chart.image
 if (verbose) print(spectraChartL8, "L8 spectral em chart"); // Display the L8 chart.
 
 endmembers.cstm = {};
-endmembers.cstm.L5 = spectralsigs_L5;
-endmembers.cstm.L8 = spectralsigs_L8;
+endmembers.cstm.L5 = spectralSigsL5;
+endmembers.cstm.L8 = spectralSigsL8;
 
 exports = endmembers;
