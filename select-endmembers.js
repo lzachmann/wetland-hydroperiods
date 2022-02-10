@@ -51,7 +51,7 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
 // Author: M. Halabisky
 // Purpose: Select endmembers for use in spectral mixture analysis
 
-var verbose = true;
+var verbose = false;
 var endmembers = {};
 
 // Set parameters
