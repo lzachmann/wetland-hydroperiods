@@ -128,7 +128,7 @@ utils.smaUnmix = function (image, stack, endmembers) {
     .arrayReduce(ee.Reducer.sum(), [0, 1])
     .arrayGet([0, 0]);
   // Convert to area
-  var unmixedArea = unmixed; //.multiply(900); // Option: multiply by 900 for approx area of each 30x30m pixel
+  var unmixedArea = unmixed.multiply(900); // Multiply by 900 for approx area of each 30x30m pixel
   // Setting a custom time metadata key.
   var unmixedOutput = unmixedArea
     .addBands(mse.sqrt())
