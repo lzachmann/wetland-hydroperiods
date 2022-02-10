@@ -51,11 +51,11 @@ var water_em = /* color: #98ff00 */ee.Geometry.Polygon(
 // Author: M. Halabisky
 // Purpose: Select endmembers for use in spectral mixture analysis
 
-var verbose = false;
+var verbose = true;
 var endmembers = {};
 
 // Set parameters
-var cloudCover = 20; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
+var cloudCover = 10; // Percent cloud cover filter. Filters out all scenes above cloud cover percentage.
 var startDate = ee.Date("1984-01-01");
 var endDate = ee.Date("2021-12-31");
 var startDOY = 136; // Start day of year (ex. May 15 = DOY 136)
@@ -87,7 +87,6 @@ var emL8 = ee
 
 // Endmembers for Landsat 5
 var emL5_noClouds = emL5
-  .filterMetadata("CLOUD_COVER", "less_than", 10)
   .select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7")
   .mean();
 // print(emL5_noClouds, "endmember_L5_noClouds");
@@ -149,9 +148,8 @@ if (verbose) print(spectralSigsL5, "spectralSigs_L5");
 
 // Endmembers for Landsat 8
 var emL8_noClouds = emL8
-  .filterMetadata("CLOUD_COVER", "less_than", 10)
   .select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7")
-  .median();
+  .mean();
 //print(emL8_noClouds,'endmember_L8_noClouds');
 // water
 var waterL8 = emL8_noClouds.reduceRegion({
@@ -216,7 +214,7 @@ var em = ee.FeatureCollection([
   ee.Feature(water_em, { label: "water" }),
   ee.Feature(grassland_em, { label: "grass" }),
   ee.Feature(tree_em, { label: "tree" }),
-  ee.Feature(mud_em, {'label': 'mud'}),
+  ee.Feature(mud_em, {label: 'mud'}),
   ee.Feature(veg_em, { label: "veg" }),
 ]);
 // Map.addLayer(em, {}, 'endmembers');
@@ -245,9 +243,8 @@ var spectraChartL5 = ui.Chart.image
   .regions(
     // scene2.select("SR_B1","SR_B2","SR_B3","SR_B4","SR_B5","SR_B7"),
     emL5
-      .filterMetadata("CLOUD_COVER", "less_than", 10)
       .select("SR_B1", "SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B7")
-      .median(),
+      .mean(),
     em,
     ee.Reducer.mean(),
     30,
@@ -263,9 +260,8 @@ var spectraChartL8 = ui.Chart.image
   .regions(
     //sceneL8.select("SR_B2","SR_B3","SR_B4","SR_B5","SR_B6","SR_B7"),
     emL8
-      .filterMetadata("CLOUD_COVER", "less_than", 10)
       .select("SR_B2", "SR_B3", "SR_B4", "SR_B5", "SR_B6", "SR_B7")
-      .median(),
+      .mean(),
     em,
     ee.Reducer.mean(),
     30,
