@@ -134,7 +134,7 @@ utils.smaUnmix = function (image, stack, endmembers) {
     .addBands(mse.sqrt())
     .addBands(QA)
     .set("date", date)
-    .rename("water", "grass", "tree", "veg", "rmse", "QA_PIXEL");
+    .rename("water", "grass", "tree", "mud", "veg", "rmse", "QA_PIXEL");
   return unmixedOutput;
 };
 
