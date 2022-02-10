@@ -1,51 +1,49 @@
-##Clean-up code for SMA outputs from GEE.
+# Clean Google Earth Engine SMA exports
 
-## Load libraries
-library("dplyr")
-library("reshape2")
-
-
-## Set working directory
-setwd("C:/CSP-backup/NCPN_NPS_drought_monitoring/time_series_data/")
-list.files()
+library(tidyverse)
+library(lubridate)
 
 
-## Upload SMA files and extract data
-Wetland_indices <- read.csv("Indices_unmasked_NA-9999_p40cloud_allyear.csv")#[-7]
-Wetland_pixelcount <- read.csv("pixelcount_unmasked_NA-9999_p40cloud_allyear.csv")
-Wetland_coord <- read.csv("pond_centroids.csv") ## wetland centroids
-Wetland_SMA <- read.csv("SMA_900m2_unmasked_NA-9999_p40cloud_allyear.csv") ## Remove columns that are confusing.
-Wetland_SMA <- Wetland_SMA[,-c(2:3,13)]
-Wetland_pixelcount <- Wetland_pixelcount[,-7]
+# Functions
+get_date <- function(system_index) {
+  ymd(parse_date_time(str_sub(system_index, 15, 22), 'Y!m!*d!'))
+}
+
+# Load the exports
+wetland_SMA <- read_csv('exports/SMA_timeSeries.csv')
+wetland_pixelcount <- read_csv("exports/Pixel_count_timeSeries.csv")
+# read_csv('exports/maxExtents_export.csv')$.geo[1]
+# wetland_coord <- read_csv("exports/") ## wetland centroids
+
+
+# Read in the coordinates
 
 ## Add xy coordinates of pond 'maxExtent' centroids to SMA data
-Wetland_SMA <- merge(Wetland_SMA, Wetland_coord, by="pond_ID")
+# wetland_SMA <- merge(wetland_SMA, wetland_coord, by="pond_ID")
 
-## Create a field of julian dates
-Wetland_SMA$JulianDate <- substring(Wetland_SMA$system.index, 15, 22)
-#Wetland_indices$JulianDate <- substring(Wetland_indices$system.index, 15, 22)
-Wetland_pixelcount$JulianDate <- substring(Wetland_pixelcount$system.index, 15, 22)
-#$Date <- as.Date(strptime(Wetland_SMA$JulianDate, "%Y %m %d"))
-#Wetland_pixelcount$Date <- as.Date(strptime(Wetland_pixelcount$JulianDate, "%Y %m %d"))
-#Wetland_indices$Date <- as.Date(strptime(Wetland_indices$JulianDate, "%Y %m %d"))
+# Remove any observation that had an NA. 
 
-## Check out data
-head(Wetland_SMA)
+d1 <- wetland_SMA %>% 
+  mutate(date = get_date(`system:index`)) %>% 
+  filter(water > 0) %>% 
+  select(-.geo)
 
+ggplot(d1 %>% filter(pond_ID == "pond_19")) +
+  geom_line(aes(x = date, y = water, group = pond_ID))
 
-# Rename each polygon ObjectID ### THIS WILL NEED TO BE CHANGED BASED ON WHAT IS USED AS A UNIQUE ID ###
-Wetland_SMA$Unique_ID <- Wetland_SMA$pond_ID # Convert to unique id 
-Wetland_pixelcount$Unique_ID <- Wetland_pixelcount$pond_ID # Convert  to unique id 
-head(Wetland_SMA)
-head(Wetland_pixelcount)
+# # Rename each polygon ObjectID ### THIS WILL NEED TO BE CHANGED BASED ON WHAT IS USED AS A UNIQUE ID ###
+# wetland_SMA$Unique_ID <- wetland_SMA$pond_ID # Convert to unique id 
+# wetland_pixelcount$Unique_ID <- wetland_pixelcount$pond_ID # Convert  to unique id 
+# head(wetland_SMA)
+# head(wetland_pixelcount)
 
 
 ## CLEANING UP NAs and unmatched pixel counts
 
 ## Remove NAs designated as -9999
-Wetland_SMA <- Wetland_SMA[!Wetland_SMA$water<0, ]
+wetland_SMA <- wetland_SMA[!wetland_SMA$water<0, ]
 ## Merge datasets
-all <- merge(Wetland_SMA, Wetland_pixelcount, by=c("Unique_ID","JulianDate"))
+all <- merge(wetland_SMA, wetland_pixelcount, by=c("Unique_ID","JulianDate"))
 head(all)
 
 # Convert to quantile
