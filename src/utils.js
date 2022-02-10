@@ -11,7 +11,7 @@ utils.viz = require("users/laura_csp/wetland_hydroperiods:src/_viz.js");
 // Default endmembers
 utils.endmembers = require("users/laura_csp/wetland_hydroperiods:src/_endmembers.js");
 // Custom endmembers
-var other_endmembers = require("users/laura_csp/wetland_hydroperiods:select-endmembers.js");
+var other_endmembers = require("users/laura_csp/wetland_hydroperiods:00-select-endmembers.js");
 
 // Pixel quality attributes generated from Landsat's internal CFMASK algorithm
 // stored in the QA_PIXEL Bitmask (Quality Assessment band)
@@ -36,7 +36,7 @@ var cloud = function (image) {
   var QA = image.select(["QA_PIXEL"]);
   // Return an image masking med-high cloud pixels
   return getQAbits(QA, 8, 9, "cloud").lte(1);
-  // *lte (less than or equal to) low confidence (=1)
+  // keeps pixels less than or equal to (lte) low confidence (=1)
 };
 // Function to mask medium and high confidence CLOUD SHADOW
 var cloudShadow = function (image) {
@@ -68,9 +68,17 @@ utils.cloudMask = function (image) {
   return image.updateMask(cirrus(image));
 };
 
-// Function to unmask an image and replace masked NA values of (0) with (-9999) for export
+// Function to unmask an image and replace masked NA values with -9999 for export,
+// otherwise, these NAs would be turned into zeros upon export, and can't be distinguished
+// from true zeros.
 utils.cloudUnmask = function (image) {
   return image.unmask(-9999);
+};
+
+utils.maskedNA_filter = function (image) {
+  // anything that is not NA is 0, anything that is NA is -1
+  // returns 0 if a pixel is 'good', 1 otherwise
+  return image.unmask(-1).lt(0);
 };
 
 // Function to add a time band to the image (for mapping time series)
@@ -122,13 +130,13 @@ utils.smaUnmix = function (image, stack, endmembers) {
     .arrayReduce(ee.Reducer.sum(), [0, 1])
     .arrayGet([0, 0]);
   // Convert to area
-  var unmixedArea = unmixed.multiply(900); // Option: multiply by 900 for approx area of each 30x30m pixel
+  var unmixedArea = unmixed.multiply(900); // Multiply by 900 for approx area of each 30x30m pixel
   // Setting a custom time metadata key.
   var unmixedOutput = unmixedArea
     .addBands(mse.sqrt())
     .addBands(QA)
     .set("date", date)
-    .rename("water", "grass", "tree", "veg", "rmse", "QA_PIXEL");
+    .rename("water", "grass", "tree", "mud", "veg", "rmse", "QA_PIXEL");
   return unmixedOutput;
 };
 
@@ -193,5 +201,29 @@ utils.load_and_filter = function (
     .filterBounds(geometry) // Use AOI or geometry from above
     .filter(ee.Filter.calendarRange(startDOY, endDOY, "day_of_year")); // Select days of the year for analysis
 };
+
+
+utils.export_ts = function(ImageCollection) {
+  // region, band
+  var ts = ImageCollection.map(function (image) {
+  // Calculate mean EDDI per wetland polygon
+  return image
+    .select(band)
+    .reduceRegions({
+      collection: geometry.select("pond_ID"),
+      reducer: ee.Reducer.mean(),
+      scale: 30,
+    })
+    .filter(ee.Filter.neq("mean", null))
+    .map(function (f) {
+      return f.set("date", image.id());
+    });
+  // Flatten collection and remove geometry for export
+  })
+  .flatten()
+  .select([".*"], null, false);
+  Export.table.toDrive(ts, "EDDI-1yr_timeSeries");
+}; //utils.export_ts(Gridmet, "eddi1y");
+
 
 exports = utils;
