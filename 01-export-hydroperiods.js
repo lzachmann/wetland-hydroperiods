@@ -100,6 +100,7 @@ var smaAll = smaAll.sort("date");
 // Display SMA image - first date
 print(smaAll, "sma all");
 Map.addLayer(smaAll, utils.viz.params.sma, "water", true);
+Map.addLayer(smaAll.map(utils.cloudUnmask), utils.viz.params.sma, 'water_unmask', true)
 
 // -------------------------------------------------------------------------
 // Run Normalized Difference indices over image collection - time series
