@@ -75,8 +75,8 @@ utils.cloudUnmask = function (image) {
   return image.unmask(-9999);
 };
 
-utils.oneOrNotOne = function (image) {
-  // anything that is not NA is 1, anything that is NA is -1
+utils.maskedNA_filter = function (image) {
+  // anything that is not NA is 0, anything that is NA is -1
 };
 
 // Function to add a time band to the image (for mapping time series)
