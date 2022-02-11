@@ -1,8 +1,12 @@
-# Clean Google Earth Engine SMA exports
+# ==== Clean Google Earth Engine SMA exports ====
 
 library(tidyverse)
 library(lubridate)
+library(hrbrthemes)
+# library(extrafont)
 
+# Columns to remove (they aren't necessary)
+extraneous_cols <- c('L8_date', 'NAIP_date', 'QA_PIXEL', '.geo') # TODO: confirm that QA_PIXEL is unneeded
 
 # Functions
 get_date <- function(system_index) {
@@ -11,108 +15,43 @@ get_date <- function(system_index) {
 
 # Load the exports
 wetland_SMA <- read_csv('exports/SMA_timeSeries.csv')
+wetland_SMA_NA <- read_csv('exports/SMA_NA_timeSeries.csv')
 
-d1 <- wetland_SMA %>% 
-  mutate(date = get_date(`system:index`)) %>% 
-#   filter(water > 0) %>% 
-  select(-.geo)
+# Post-processing
+masked_recs <- wetland_SMA_NA %>% 
+  distinct(`system:index`, na_col = water) %>% 
+  mutate(is_masked = na_col != 0) # TODO: consider another threshold?
 
-ggplot(d1 %>% filter(pond_ID == "pond_19")) +
-  geom_line(aes(x = date, y = water, group = pond_ID))
+# Phase 1 cleanup
+d1 <- wetland_SMA %>%
+  left_join(masked_recs, by = "system:index") %>% 
+  mutate(date = get_date(`system:index`), rmse_is_gt0 = rmse > 0, # TODO: ask Meghan why this is the case...
+         keep = !is_masked & rmse_is_gt0) %>% 
+  select(-any_of(extraneous_cols))
 
-# ##Clean-up code for SMA outputs from GEE.
+# To the phase 1 filters, add an additional quantile filter
+d2 <- d1 %>% 
+  filter(keep, water < quantile(water, probs = 0.999))
 
-# ## Load libraries
-# library("dplyr")
-# library("reshape2")
+# Plot the entire timeseries for a subset of sites
+ggplot(
+  d2  %>% filter(pond_ID %in% sample(unique(pond_ID), 9)), 
+  aes(x = date, y = water, group = pond_ID)
+) +
+  facet_wrap(~pond_ID, scales = 'free') +
+  geom_point(
+        aes(fill = interaction(is_masked, rmse_is_gt0)), pch = 21, size = 2
+  ) +
+  geom_path() +
+  theme_ipsum_rc(grid = "Y", base_size = 14, base_family = font_an,
+                 axis_title_size = 16, strip_text_size = 16) +
+  labs(x = "Date", y = 'Water') +
+  theme(legend.position = "bottom")
 
+# One curve for each year for each pond
+ggplot(d2 %>% filter(pond_ID %in% sample(unique(pond_ID), 9))) +
+  facet_wrap(~pond_ID, scales = 'free') +
+  geom_line(aes(x = yday(date), y = water, group = interaction(year(date), pond_ID)))
 
-# ## Set working directory
-# setwd("C:/CSP-backup/NCPN_NPS_drought_monitoring/time_series_data/")
-# list.files()
-
-
-# ## Upload SMA files and extract data
-# wetlandSMA <- read.csv("SMA_timeSeries.csv") ## Remove columns that are confusing.
-# wetlandIndices <- read.csv("Normalized_indices_timeSeries.csv")#[-30]
-# wetlandCoord <- read.csv("pond_centroids.csv") ## wetland centroids
-# wetlandSMA <- wetlandSMA[,-c(2:3,13)]
-
-# ## Add xy coordinates of pond 'maxExtent' centroids to SMA data
-# wetlandSMA <- merge(wetlandSMA, wetlandCoord, by="pond_ID")
-
-# ## Create a Date field
-# wetlandSMA$Date <- substring(wetlandSMA$system.index, 15, 22)
-# #wWetlandIndices$Date <- substring(wetlandIndices$system.index, 15, 22)
-# #$Date <- as.Date(strptime(Wetland_SMA$Date, "%Y %m %d"))
-# #wetlandIndices$Date <- as.Date(strptime(wetlandIndices$Date, "%Y %m %d"))
-
-# ## Check out data
-# head(wetlandSMA)
-
-
-# # Rename each polygon ObjectID ### THIS WILL NEED TO BE CHANGED BASED ON WHAT IS USED AS A UNIQUE ID ###
-# wetlandSMA$uniqueID <- wetlandSMA$pond_ID # Convert to unique id 
-# head(wetlandSMA)
-
-
-# ## CLEANING UP NAs and unmatched pixel counts
-
-# ## Remove NAs designated as -9999
-# wetlandSMA <- wetlandSMA[!Wetland_SMA$water<0, ]
-# head(wetlandSMA)
-
-# # Convert to quantile
-# cleanedSMA1 <- as.data.frame(wetlandSMA %>% group_by(Unique_ID) %>% mutate(quantile = quantile(water,.999)))## Find 99.9% to remove outliers
-# cleanedSMA2 <- as.data.frame(cleanedSMA1%>% group_by(Unique_ID) %>% mutate(pixelcount = max(count)))
-
-# head(SMA_cleaned2)
-# SMA_cleaned2 <- cleanedSMA2[cleanedSMA2$pixelcount==SMA_cleaned2$count,] #27634-16945(observations with bad pixel counts) = 10689
-# SMA_cleaned2 <- cleanedSMA2[cleanedSMA2$water<SMA_cleaned2$quantile,] #10689-10644
-# SMA_cleaned2 <- cleanedSMA2[!cleanedSMA2$rmse==0,] #10689-10644
-
-# cleanedSMA2$Date <- as.Date(strptime(cleanedSMA2$Date, "%Y %m %d"))
-# cleanedSMA2$DOY <- as.numeric(substring(cleanedSMA2$Date, 5, 9))
-# cleanedSMA2$Year <- as.numeric(substring(cleanedSMA2$Date, 1, 4))
-# cleanedSMA2$Date <- as.numeric(cleanedSMA2$Date)
-# head(cleanedSMA2)
-
-# ## Test out
-
-# #1 Alldata
-# testID <- "pond_11"
-
-# unique(cleanedSMA2$Unique_ID)
-# test <- cleanedSMA2[cleanedSMA2$uniqueID==testID, ]
-
-# #2 select year
-# Year <- 2009
-# SMAyear <- cleanedSMA2[cleanedSMA2$Year==Year,]
-# test <- SMAyear[SMAyear$uniqueID==testID, ]
-
-# #3 summer
-# summerSMA <- cleanedSMA2[cleanedSMA2$DOY<1010,]
-# summerSMA <- SMA_summer[SMA_summer$DOY>0520,]
-# test2 <- summerSMA[summerSMA$uniqueID==testID, ]
-
-# ## Plot
-# tail(test2)
-
-# plot(test2$Date, test2$water)
-# lines(test2$Date, test2$water)
-      
-# plot(test2$Date, test2$rmse)
-# lines(test2$Date, test2$rmse)
-
-# ## Diagnostic
-# plot(test$DOY, test$rmse)
-# plot(test$Year, test$rmse)
-# plot(cleanedSMA2$area_sqm.x, cleanedSMA2$rmse)
-# plot(cleanedSMA2$Date, cleanedSMA2$rmse)
-# plot(cleanedSMA2$DOY, cleanedSMA2$rmse)
-# plot(cleanedSMA2$Date, cleanedSMA2$water)
-
-
-# ## Export cleaned SMA data
-# write.csv(cleanedSMA2, "cleaned_SMA_data_1984-2021_all.csv") #outputs based on Landsat Collection 1 (for now)
-# write.csv(summerSMA, "cleaned_SMA_data_1984-2021_summer.csv") #May 20-Oct 10 data only (to reduce noise from snow)
+## Export cleaned SMA data
+write_csv(d2, "output/cleaned_SMA_data.csv")
